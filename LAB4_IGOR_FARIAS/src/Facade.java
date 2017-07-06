@@ -37,11 +37,11 @@ public class Facade {
 	
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
 		Aposta aposta = new Aposta(apostador, valor, previsao);
-		controller.getListaApostas().put(cenario, aposta);
+		controller.getMapaApostas().put(cenario, aposta);
 	}
 	
 	public int valorTotalDasApostas(int cenario) {
-		Set<Entry<Integer, Aposta>> setApostas = controller.getListaApostas().entrySet();
+		Set<Entry<Integer, Aposta>> setApostas = controller.getMapaApostas().entrySet();
 		int valor = 0;
 		for (Entry<Integer, Aposta> aposta : setApostas) {
 			valor += aposta.getValue().getValor();
@@ -50,12 +50,28 @@ public class Facade {
 	}
 	
 	public String exibeApostas(int cenario) {
-		Collection<Aposta> listaApostas = controller.getListaApostas().values();
+		Collection<Aposta> listaApostas = controller.getMapaApostas().values();
 		String retorno = "";
 		for (Aposta aposta : listaApostas) {
 			retorno += aposta.getApostador() + " - " + aposta.getValor()/100 + " - " + aposta.getPrevisao() + Utilidades.LN;
 		}
 		return retorno;
+	}
+	
+	public void fecharAposta(int cenario, boolean ocorreu) {
+		Cenario meuCenario = controller.getListaCenarios().get(cenario-1);
+		if (ocorreu) {
+			meuCenario.setEstado("Finalizado (ocorreu)");
+		}
+		else {
+			meuCenario.setEstado("Finalizado (n ocorreu)");
+		}
+		
+	}
+	
+	public int getCaixaCenario(int cenario) {
+		// Lembrar de acrescentar Set de Apostas em Cenario e excluir o mapa de apostas do sistema
+		
 	}
 
 	public int getCaixa() {

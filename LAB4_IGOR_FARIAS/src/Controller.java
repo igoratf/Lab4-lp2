@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Controller {
 	private ArrayList<Cenario> listaCenarios = new ArrayList<Cenario>();
-	private HashMap<Integer, Aposta> listaApostas = new HashMap<Integer, Aposta>();
+	private HashMap<Integer, Aposta> mapaApostas = new HashMap<Integer, Aposta>();
 	private int caixa;
 	private double taxa;
 	
@@ -27,8 +27,8 @@ public class Controller {
 		return listaCenarios;
 	}
 
-	public HashMap<Integer, Aposta> getListaApostas() {
-		return listaApostas;
+	public HashMap<Integer, Aposta> getMapaApostas() {
+		return mapaApostas;
 	}
 
 	

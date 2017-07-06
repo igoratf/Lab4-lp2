@@ -8,6 +8,7 @@ public class Cenario {
 	public Cenario(int numeracao, String descricao) {
 		this.numeracao = numeracao;
 		this.descricao = descricao;
+		this.estado = "Não finalizado";
 	}
 	
 
@@ -38,6 +39,13 @@ public class Cenario {
 		return retorno;
 		
 	}
+
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	
+	
 	
 	
 }
