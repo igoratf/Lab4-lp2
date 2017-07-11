@@ -1,77 +1,112 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.Set;
-
 public class Facade {
-	Controller controller;
-	int indexCenarios = 0;
-	
+	/**
+	 * Classe de fachada, possui métodos métodos de uso geral e utiliza o
+	 * sistema para realizar as ações
+	 */
+	protected Controller controller;
+
+	/**
+	 * Inicializa o sistema, instanciando o controlador
+	 * 
+	 * @param caixa
+	 *            é o valor inicial do caixa do sistema, em centavos
+	 * @param taxa
+	 *            é a taxa que será cobrada das apostas perdedoras pelo sistema
+	 *            para adicionar certo valor ao caixa
+	 */
 	public void inicializa(int caixa, double taxa) {
 		controller = new Controller(caixa, taxa);
 	}
-	
+
+	/**
+	 * Chama o método cadastrarCenario do controlador para cadastrar um cenário
+	 * 
+	 * @param descricao
+	 *            é a possível situação futura que o cenário descreve
+	 * @return retorna o número de identificação do cenário
+	 */
 	public int cadastrarCenario(String descricao) {
-		int numCenario = indexCenarios + 1;
-		Cenario cenario = new Cenario(numCenario, descricao);
-		controller.getListaCenarios().add(indexCenarios, cenario);
-		indexCenarios++;
-		return numCenario;
+		return controller.cadastrarCenario(descricao);
 	}
-	
+
+	/**
+	 * Chama o método exibirCenario do controlador para exibir informações de um
+	 * cenário de apostas a partir de sua numeração
+	 * 
+	 * @param cenario
+	 *            é a numeração que identifica o cenário
+	 * @return retorna uma representação textual do cenário
+	 */
 	public String exibirCenario(int cenario) {
-		Cenario meuCenario = controller.getListaCenarios().get(cenario-1);
-		String retorno = "";
-		retorno += meuCenario.getNumeracao() + " - " + meuCenario.getDescricao() + " - " + meuCenario.getEstado() + Utilidades.LN;
-		return retorno;
+		return controller.exibirCenario(cenario);
 	}
-	
+
+	/**
+	 * Chama o método exibirCenarios do controlador para exibir informações de
+	 * todos os cenários cadastrados
+	 * 
+	 * @return representação textual de todos os cenários
+	 */
 	public String exibirCenarios() {
-		ArrayList<Cenario> listaCenarios = controller.getListaCenarios();
-		String retorno = "";
-		for (Cenario cenario : listaCenarios) {
-			retorno += exibirCenario(cenario.getNumeracao());
-		}
-		return retorno;
+		return controller.exibirCenarios();
 	}
-	
+
+	/**
+	 * Chama o método cadastrarAposta do controlador para cadastrar uma aposta
+	 * em um determinado cenário
+	 * 
+	 * @param cenario
+	 *            é a numeração que identifica o cenário que irá receber a
+	 *            aposta
+	 * @param apostador
+	 *            é o nome do apostador
+	 * @param valor
+	 *            é o valor da aposta, em centavos
+	 * @param previsao
+	 *            é o palpite da aposta para a situação futura
+	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
-		Aposta aposta = new Aposta(apostador, valor, previsao);
-		controller.getMapaApostas().put(cenario, aposta);
+		controller.cadastrarAposta(cenario, apostador, valor, previsao);
 	}
-	
+
+	/**
+	 * Chama o método valorTotalDasApostas do controlador para retornar o valor
+	 * total das apostas de um cenário, identificado por sua numeração
+	 * 
+	 * @param cenario
+	 *            é a numeração que identifica o cenário
+	 * @return o valor total das apostas do cenário em centavos
+	 */
 	public int valorTotalDasApostas(int cenario) {
-		Set<Entry<Integer, Aposta>> setApostas = controller.getMapaApostas().entrySet();
-		int valor = 0;
-		for (Entry<Integer, Aposta> aposta : setApostas) {
-			valor += aposta.getValue().getValor();
-		}
-		return valor;
+		return controller.valorTotalDasApostas(cenario);
 	}
-	
+
+	/**
+	 * Chama o método exibirApostas do controlador para exibir informações das
+	 * apostas de um cenário
+	 * 
+	 * @param cenario é o número de identificação do cenário
+	 * @return representação textual das apostas do cenário
+	 */
 	public String exibeApostas(int cenario) {
-		Collection<Aposta> listaApostas = controller.getMapaApostas().values();
-		String retorno = "";
-		for (Aposta aposta : listaApostas) {
-			retorno += aposta.getApostador() + " - " + aposta.getValor()/100 + " - " + aposta.getPrevisao() + Utilidades.LN;
-		}
-		return retorno;
+		return controller.exibeApostas(cenario);
 	}
 	
+	/**
+	 * Finaliza um cenário de apostas
+	 * @param cenario é o número de identificação do cenário
+	 * @param ocorreu determina se o cenário ocorreu ou não
+	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
-		Cenario meuCenario = controller.getListaCenarios().get(cenario-1);
-		if (ocorreu) {
-			meuCenario.setEstado("Finalizado (ocorreu)");
-		}
-		else {
-			meuCenario.setEstado("Finalizado (n ocorreu)");
-		}
-		
+		controller.fecharAposta(cenario, ocorreu);
 	}
-	
+
 	public int getCaixaCenario(int cenario) {
-		// Lembrar de acrescentar Set de Apostas em Cenario e excluir o mapa de apostas do sistema
-		
+		return controller.getCaixaCenario(cenario);
+	}
+
+	public int getTotalRateioCenario(int cenario) {
+		return controller.getTotalRateioCenario(cenario);
 	}
 
 	public int getCaixa() {
@@ -81,6 +116,5 @@ public class Facade {
 	public double getTaxa() {
 		return controller.getTaxa();
 	}
-	
-	
+
 }

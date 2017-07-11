@@ -1,3 +1,4 @@
+package projeto;
 import java.util.HashSet;
 
 /**
@@ -18,7 +19,7 @@ public class Cenario {
 			throw new NullPointerException("descricao nula");
 		}
 		if (descricao.trim().equals("")) {
-			throw new IllegalArgumentException("descricao invalida");
+			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		}
 		if (numeracao <= 0) {
 			throw new IllegalArgumentException("numeracao invalida");
@@ -46,7 +47,7 @@ public class Cenario {
 			retorno = "Finalizado (n ocorreu)";
 			break;
 		case 0:
-			retorno = "Não finalizado";
+			retorno = "Nao finalizado";
 			break;
 		default:
 			retorno = "Estado inválido";
@@ -67,8 +68,7 @@ public class Cenario {
 	@Override
 	public String toString() {
 		String retorno = "";
-		retorno += getNumeracao() + " - " + getDescricao() + " - " + getEstado()
-				+ Utilidades.LN;
+		retorno += getNumeracao() + " - " + getDescricao() + " - " + getEstado();
 		return retorno;
 	}
 	

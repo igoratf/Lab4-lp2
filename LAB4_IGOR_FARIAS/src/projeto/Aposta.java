@@ -1,7 +1,8 @@
+package projeto;
 /**
  * Classe correspondente a uma aposta, que possui o nome do apostador, um valor
- * associado em centavos e a previsão que irá determinar seu resultado no
- * cenário
+ * associado em centavos e a previsï¿½o que irï¿½ determinar seu resultado no
+ * cenï¿½rio
  * 
  * @author Igor Farias
  *

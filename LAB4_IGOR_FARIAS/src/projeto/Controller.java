@@ -1,9 +1,10 @@
+package projeto;
 import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * Classe controladora que representa o sistema que irá administrar o
- * cadastramento de cenários e apostas e suas resoluções
+ * Classe controladora que representa o sistema que irï¿½ administrar o
+ * cadastramento de cenï¿½rios e apostas e suas resoluï¿½ï¿½es
  * 
  * @author Igor Farias
  *
@@ -16,19 +17,22 @@ public class Controller {
 	private double taxa;
 
 	public Controller(int caixa, double taxa) {
-		if (caixa < 0 || taxa <= 0) {
-			throw new IllegalArgumentException("caixa ou taxa invalidos");
+		if (caixa < 0) {
+			throw new IllegalArgumentException("Erro na inicializacao: Caixa nao pode ser inferior a 0");
+		}
+		if (taxa < 0) {
+			throw new IllegalArgumentException("Erro na inicializacao: Taxa nao pode ser inferior a 0");
 		}
 		this.caixa = caixa;
 		this.taxa = taxa;
 	}
 
 	/**
-	 * Cadastra um cenário para receber apostas
+	 * Cadastra um cenï¿½rio para receber apostas
 	 * 
 	 * @param descricao
-	 *            é a situação do cenário que poderá acontecer ou não
-	 * @return o número de identificação do cenário
+	 *            ï¿½ a situaï¿½ï¿½o do cenï¿½rio que poderï¿½ acontecer ou nï¿½o
+	 * @return o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
 	 */
 	public int cadastrarCenario(String descricao) {
 		int numCenario = indexCenarios + 1;
@@ -39,21 +43,21 @@ public class Controller {
 	}
 
 	/**
-	 * Exibe informações de um cenário
+	 * Exibe informaï¿½ï¿½es de um cenï¿½rio
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
-	 * @return representação textual do cenário
+	 *            ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
+	 * @return representaï¿½ï¿½o textual do cenï¿½rio
 	 */
 	public String exibirCenario(int cenario) {
 		Cenario meuCenario = getCenario(cenario);
-		return meuCenario.toString();
+		return meuCenario.toString().trim();
 	}
 
 	/**
-	 * Exibe informações de todos os cenários cadastrados
+	 * Exibe informaï¿½ï¿½es de todos os cenï¿½rios cadastrados
 	 * 
-	 * @return representação textual de todos os cenários cadastrados
+	 * @return representaï¿½ï¿½o textual de todos os cenï¿½rios cadastrados
 	 */
 	public String exibirCenarios() {
 		String retorno = "";
@@ -64,29 +68,38 @@ public class Controller {
 	}
 
 	/**
-	 * Cadastra uma aposta no cenário especificado
+	 * Cadastra uma aposta no cenï¿½rio especificado
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
+	 *            ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
 	 * @param apostador
-	 *            é o nome do apostador
+	 *            ï¿½ o nome do apostador
 	 * @param valor
-	 *            é o valor da aposta em centavos
+	 *            ï¿½ o valor da aposta em centavos
 	 * @param previsao
-	 *            é a previsão da aposta sobre o cenário
+	 *            ï¿½ a previsï¿½o da aposta sobre o cenï¿½rio
 	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
+		if (cenario > listaCenarios.size() || listaCenarios.size() == 0) {
+			throw new IndexOutOfBoundsException ("Erro na consulta de cenario: Cenario nao cadastrado");
+		}
+		if (cenario <= 0) {
+			throw new IllegalArgumentException ("Erro no cadastro de aposta: Cenario invalido");
+		}
+		if (apostador == null || apostador.trim().equals("")) {
+			throw new IllegalArgumentException ("Apostador nao pode ser vazio ou nulo");
+		}
 		Cenario meuCenario = getCenario(cenario);
 		Aposta aposta = new Aposta(apostador, valor, previsao);
 		meuCenario.getApostas().add(aposta);
 	}
 
 	/**
-	 * Retorna o valor total das apostas de um cenário
+	 * Retorna o valor total das apostas de um cenï¿½rio
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
-	 * @return é o valor total das apostas do cenário em centavos
+	 *            ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
+	 * @return ï¿½ o valor total das apostas do cenï¿½rio em centavos
 	 */
 	public int valorTotalDasApostas(int cenario) {
 		int valor = 0;
@@ -99,11 +112,11 @@ public class Controller {
 	}
 
 	/**
-	 * Exibe todas as apostas de um cenário
+	 * Exibe todas as apostas de um cenï¿½rio
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
-	 * @return representação textual de todas as apostas do cenário
+	 *            ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
+	 * @return representaï¿½ï¿½o textual de todas as apostas do cenï¿½rio
 	 */
 	public String exibeApostas(int cenario) {
 		Cenario meuCenario = getCenario(cenario);
@@ -116,12 +129,12 @@ public class Controller {
 	}
 
 	/**
-	 * Finaliza um cenário de apostas
+	 * Finaliza um cenï¿½rio de apostas
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
+	 *            ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
 	 * @param ocorreu
-	 *            especifica se o cenário ocorreu ou não
+	 *            especifica se o cenï¿½rio ocorreu ou nï¿½o
 	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
 		Cenario meuCenario = getCenario(cenario);
@@ -137,7 +150,7 @@ public class Controller {
 	 * Retorna o valor total das apostas perdedoras
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
+	 *            ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
 	 * @return o valor total das apostas perdedoras
 	 */
 	public int valorTotalApostasPerdedoras(int cenario) {
@@ -159,11 +172,11 @@ public class Controller {
 	}
 
 	/**
-	 * Usa o método valorTotalApostasPerdedoras para calcular o valor de um
-	 * cenário que será destinado ao caixa
+	 * Usa o mï¿½todo valorTotalApostasPerdedoras para calcular o valor de um
+	 * cenï¿½rio que serï¿½ destinado ao caixa
 	 * 
 	 * @param cenario
-	 * @return retorna o valor que erá destinado ao caixa em centavos
+	 * @return retorna o valor que erï¿½ destinado ao caixa em centavos
 	 */
 	public int getCaixaCenario(int cenario) {
 		int caixaCenario = (int) (valorTotalApostasPerdedoras(cenario) * taxa);
@@ -171,10 +184,10 @@ public class Controller {
 	}
 
 	/**
-	 * Usa os métodos valorTotalApostasPerdedoras e getCaixaCenario para
-	 * retornar o valor total que será rateado entre os vencedores
+	 * Usa os mï¿½todos valorTotalApostasPerdedoras e getCaixaCenario para
+	 * retornar o valor total que serï¿½ rateado entre os vencedores
 	 * 
-	 * @param cenario é o número de identificação do cenário
+	 * @param cenario ï¿½ o nï¿½mero de identificaï¿½ï¿½o do cenï¿½rio
 	 * @return valor total a ser rateado entre os vencedores, em centavos
 	 */
 	public int getTotalRateioCenario(int cenario) {
@@ -191,8 +204,11 @@ public class Controller {
 	}
 
 	public Cenario getCenario(int numCenario) {
-		if (numCenario > listaCenarios.size() || listaCenarios.size() == 0 || numCenario == 0) {
-			throw new IllegalArgumentException("cenario invalido");
+		if (numCenario <= 0) {
+			throw new IllegalArgumentException("Erro na consulta de cenario: Cenario invalido");
+		}
+		if (numCenario > listaCenarios.size() || listaCenarios.size() == 0) {
+			throw new IndexOutOfBoundsException ("Erro na consulta de cenario: Cenario nao cadastrado");
 		}
 		Cenario cenario = listaCenarios.get(numCenario - 1);
 		return cenario;
