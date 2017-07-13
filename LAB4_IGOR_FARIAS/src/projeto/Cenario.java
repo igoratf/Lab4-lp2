@@ -1,5 +1,5 @@
 package projeto;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Classe correspondente ao cenário, que possuirá uma numeração, uma descrição,
@@ -9,10 +9,12 @@ import java.util.HashSet;
  *
  */
 public class Cenario {
-	private HashSet<Aposta> apostas = new HashSet<>();
+	private ArrayList<Aposta> apostas = new ArrayList<>();
 	private int numeracao;
 	private String descricao;
 	private int estado;
+	private int caixaCenario;
+	private int totalRateioCenario;
 
 	public Cenario(int numeracao, String descricao) {
 		if (descricao == null) {
@@ -57,13 +59,6 @@ public class Cenario {
 
 	}
 
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
-
-	public HashSet<Aposta> getApostas() {
-		return apostas;
-	}
 	
 	@Override
 	public String toString() {
@@ -72,5 +67,63 @@ public class Cenario {
 		return retorno;
 	}
 	
+	public void cadastrarAposta(String apostador, int valor, String previsao) {
+		Aposta aposta = new Aposta(apostador, valor, previsao);
+		this.apostas.add(aposta);
+	}
+	
+	public int valorTotalDeApostas() {
+		int valorTotal = 0;
+		for (Aposta aposta : apostas) {
+			valorTotal += aposta.getValor();
+		}
+		return valorTotal;
+	}
+	
+	public int totalDeApostas() {
+		return apostas.size();
+	}
+	
+	public String exibeApostas() {
+		String retorno = "";
+		for (Aposta aposta : apostas) {
+			retorno += aposta.toString();
+		}
+		return retorno;
+	}
+	
+	public void fecharAposta(boolean ocorreu, double taxa) {
+		if (ocorreu) {
+			this.estado = 2;
+		} else {
+			this.estado = 1;
+		}
+		this.caixaCenario = (int) (this.valorTotalApostasPerdedoras() * taxa);
+		this.totalRateioCenario = this.valorTotalApostasPerdedoras() - this.caixaCenario;
+	}
+	
+	public int valorTotalApostasPerdedoras() {
+		int totalApostasPerdedoras = 0;
+		for (Aposta aposta : apostas) {
+			if (this.estado == 2) {
+				if (aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) {
+					totalApostasPerdedoras += aposta.getValor();
+				}
+			} else if (this.estado == 1) {
+				if (aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER")) {
+					totalApostasPerdedoras += aposta.getValor();
+				}
+			}
+		}
+		return totalApostasPerdedoras;
+	}
+	
+	public int getCaixaCenario() {
+		return this.caixaCenario;
+	}
+	
+	public int getTotalRateioCenario() {
+		return this.totalRateioCenario;
+	}
 
 }

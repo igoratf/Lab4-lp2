@@ -1,7 +1,7 @@
 package projeto;
 /**
- * Classe de fachada, possui m�todos m�todos de uso geral e utiliza o sistema
- * para realizar as a��es
+ * Classe de fachada, possui métodos de uso geral e utiliza o sistema
+ * para realizar as ações
  */
 public class Facade {
 
@@ -11,9 +11,9 @@ public class Facade {
 	 * Inicializa o sistema, instanciando o controlador
 	 * 
 	 * @param caixa
-	 *            � o valor inicial do caixa do sistema, em centavos
+	 *            é o valor inicial do caixa do sistema, em centavos
 	 * @param taxa
-	 *            � a taxa que ser� cobrada das apostas perdedoras pelo sistema
+	 *            é a taxa que será cobrada das apostas perdedoras pelo sistema
 	 *            para adicionar certo valor ao caixa
 	 */
 	public void inicializa(int caixa, double taxa) {
@@ -21,51 +21,51 @@ public class Facade {
 	}
 
 	/**
-	 * Chama o m�todo cadastrarCenario do controlador para cadastrar um cen�rio
+	 * Chama o método cadastrarCenario do controlador para cadastrar um cenário
 	 * 
 	 * @param descricao
-	 *            � a poss�vel situa��o futura que o cen�rio descreve
-	 * @return retorna o n�mero de identifica��o do cen�rio
+	 *            é a possível situação futura que o cenário descreve
+	 * @return retorna o número de identificação do cenário
 	 */
 	public int cadastrarCenario(String descricao) {
 		return controller.cadastrarCenario(descricao);
 	}
 
 	/**
-	 * Chama o m�todo exibirCenario do controlador para exibir informa��es de um
-	 * cen�rio de apostas a partir de sua numera��o
+	 * Chama o método exibirCenario do controlador para exibir informações de um
+	 * cenário de apostas a partir de sua numeração
 	 * 
 	 * @param cenario
-	 *            � a numera��o que identifica o cen�rio
-	 * @return retorna uma representa��o textual do cen�rio
+	 *            é a numeração que identifica o cenário
+	 * @return retorna uma representação textual do cenário
 	 */
 	public String exibirCenario(int cenario) {
 		return controller.exibirCenario(cenario);
 	}
 
 	/**
-	 * Chama o m�todo exibirCenarios do controlador para exibir informa��es de
-	 * todos os cen�rios cadastrados
+	 * Chama o método exibirCenarios do controlador para exibir informações de
+	 * todos os cenários cadastrados
 	 * 
-	 * @return representa��o textual de todos os cen�rios
+	 * @return representação textual de todos os cenários
 	 */
 	public String exibirCenarios() {
 		return controller.exibirCenarios();
 	}
 
 	/**
-	 * Chama o m�todo cadastrarAposta do controlador para cadastrar uma aposta
-	 * em um determinado cen�rio
+	 * Chama o método cadastrarAposta do controlador para cadastrar uma aposta
+	 * em um determinado cenário
 	 * 
 	 * @param cenario
-	 *            � a numera��o que identifica o cen�rio que ir� receber a
+	 *            é a numeração que identifica o cenário que irá receber a
 	 *            aposta
 	 * @param apostador
-	 *            � o nome do apostador
+	 *            é o nome do apostador
 	 * @param valor
-	 *            � o valor da aposta, em centavos
+	 *            é o valor da aposta, em centavos
 	 * @param previsao
-	 *            � o palpite da aposta para a situa��o futura
+	 *            é o palpite da aposta para a situa��o futura
 	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor,
 			String previsao) {
@@ -73,24 +73,24 @@ public class Facade {
 	}
 
 	/**
-	 * Chama o m�todo valorTotalDasApostas do controlador para retornar o valor
-	 * total das apostas de um cen�rio, identificado por sua numera��o
+	 * Chama o método valorTotalDasApostas do controlador para retornar o valor
+	 * total das apostas de um cenário, identificado por sua numeração
 	 * 
 	 * @param cenario
-	 *            � a numera��o que identifica o cen�rio
-	 * @return o valor total das apostas do cen�rio em centavos
+	 *            é a numeração que identifica o cenário
+	 * @return o valor total das apostas do cenário em centavos
 	 */
 	public int valorTotalDeApostas(int cenario) {
 		return controller.valorTotalDeApostas(cenario);
 	}
 
 	/**
-	 * Chama o m�todo exibirApostas do controlador para exibir informa��es das
-	 * apostas de um cen�rio
+	 * Chama o método exibirApostas do controlador para exibir informações das
+	 * apostas de um cenário
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
-	 * @return representa��o textual das apostas do cen�rio
+	 *            é o número de identificação do cenário
+	 * @return representação textual das apostas do cenário
 	 */
 	
 	public int totalDeApostas(int cenario) {
@@ -101,12 +101,12 @@ public class Facade {
 	}
 
 	/**
-	 * Finaliza um cen�rio de apostas
+	 * Finaliza um cenário de apostas
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
+	 *            é o número de identificação do cenário
 	 * @param ocorreu
-	 *            determina se o cen�rio ocorreu ou n�o
+	 *            determina se o cenário ocorreu ou não
 	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
 		controller.fecharAposta(cenario, ocorreu);

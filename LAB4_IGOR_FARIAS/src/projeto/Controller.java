@@ -1,11 +1,10 @@
 package projeto;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
- * Classe controladora que representa o sistema que ir� administrar o
- * cadastramento de cen�rios e apostas e suas resolu��es
+ * Classe controladora que representa o sistema que irá administrar o
+ * cadastramento de cenários e apostas e suas resoluções
  * 
  * @author Igor Farias
  *
@@ -29,7 +28,7 @@ public class Controller {
 	}
 
 	/**
-	 * Cadastra um cen�rio para receber apostas
+	 * Cadastra um cenário para receber apostas
 	 * 
 	 * @param descricao
 	 *            � a situa��o do cen�rio que poder� acontecer ou n�o
@@ -70,10 +69,10 @@ public class Controller {
 	}
 
 	/**
-	 * Cadastra uma aposta no cenario especificado
+	 * Cadastra uma aposta no cenário especificado
 	 * 
 	 * @param cenario
-	 *            o numero de identificacao do cenario
+	 *            o número de identificação do cenário
 	 * @param apostador
 	 *            o nome do apostador
 	 * @param valor
@@ -85,8 +84,7 @@ public class Controller {
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta: ", cenario);
 		apostaExcecoes("Erro no cadastro de aposta: ", apostador, valor, previsao);
 		Cenario meuCenario = getCenario(cenario);
-		Aposta aposta = new Aposta(apostador, valor, previsao);
-		meuCenario.getApostas().add(aposta);
+		meuCenario.cadastrarAposta(apostador, valor, previsao);
 	}
 
 	/**
@@ -98,20 +96,14 @@ public class Controller {
 	 */
 	public int valorTotalDeApostas(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do valor total de apostas: ", cenario);
-		int valor = 0;
 		Cenario meuCenario = getCenario(cenario);
-		Set<Aposta> apostasCenario = meuCenario.getApostas();
-		for (Aposta aposta : apostasCenario) {
-			valor += aposta.getValor();
-		}
-		return valor;
+		return meuCenario.valorTotalDeApostas();
 	}
 
 	public int totalDeApostas(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do total de apostas: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		int qtdApostas = meuCenario.getApostas().size();
-		return qtdApostas;
+		return meuCenario.totalDeApostas();
 	}
 
 	/**
@@ -123,12 +115,7 @@ public class Controller {
 	 */
 	public String exibeApostas(int cenario) {
 		Cenario meuCenario = getCenario(cenario);
-		Set<Aposta> apostasCenario = meuCenario.getApostas();
-		String retorno = "";
-		for (Aposta aposta : apostasCenario) {
-			retorno += aposta.toString();
-		}
-		return retorno;
+		return meuCenario.exibeApostas();
 	}
 
 	/**
@@ -143,13 +130,8 @@ public class Controller {
 		cenarioInvalidosExcecoes("Erro ao fechar aposta: ", cenario);
 		cenarioFechadoExcecao("Erro ao fechar aposta: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		if (ocorreu) {
-			meuCenario.setEstado(2);
-		} else {
-			meuCenario.setEstado(1);
-		}
-		this.caixa += getCaixaCenario(cenario);
-
+		meuCenario.fecharAposta(ocorreu, this.taxa);
+		this.caixa += meuCenario.getCaixaCenario();
 	}
 
 	/**
@@ -161,20 +143,7 @@ public class Controller {
 	 */
 	public int valorTotalApostasPerdedoras(int cenario) {
 		Cenario meuCenario = getCenario(cenario);
-		Set<Aposta> apostasCenario = meuCenario.getApostas();
-		int totalApostasPerdedoras = 0;
-		for (Aposta aposta : apostasCenario) {
-			if (meuCenario.getEstado().equals("Finalizado (ocorreu)")) {
-				if (aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) {
-					totalApostasPerdedoras += aposta.getValor();
-				}
-			} else if (meuCenario.getEstado().equals("Finalizado (n ocorreu)")) {
-				if (aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER")) {
-					totalApostasPerdedoras += aposta.getValor();
-				}
-			}
-		}
-		return totalApostasPerdedoras;
+		return meuCenario.valorTotalApostasPerdedoras();
 	}
 
 	/**
@@ -187,8 +156,8 @@ public class Controller {
 	public int getCaixaCenario(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do caixa do cenario: ", cenario);
 		cenarioAbertoExcecao("Erro na consulta do caixa do cenario: ", cenario);
-		int caixaCenario = (int) (valorTotalApostasPerdedoras(cenario) * taxa);
-		return caixaCenario;
+		Cenario meuCenario = getCenario(cenario);
+		return meuCenario.getCaixaCenario();
 	}
 
 	/**
@@ -202,8 +171,8 @@ public class Controller {
 	public int getTotalRateioCenario(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do total de rateio do cenario: ", cenario);
 		cenarioAbertoExcecao("Erro na consulta do total de rateio do cenario: ", cenario);
-		int totalRateioCenario = valorTotalApostasPerdedoras(cenario) - getCaixaCenario(cenario);
-		return totalRateioCenario;
+		Cenario meuCenario = getCenario(cenario);
+		return meuCenario.getTotalRateioCenario();
 	}
 
 	public int getCaixa() {
