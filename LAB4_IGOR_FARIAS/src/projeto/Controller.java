@@ -1,4 +1,5 @@
 package projeto;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -43,21 +44,22 @@ public class Controller {
 	}
 
 	/**
-	 * Exibe informa��es de um cen�rio
+	 * Exibe informacoes de um cenario
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
-	 * @return representa��o textual do cen�rio
+	 *            o numero de identificacao do cenario
+	 * @return representacao textual do cenario
 	 */
 	public String exibirCenario(int cenario) {
+		cenarioInvalidosExcecoes("Erro na consulta de cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.toString().trim();
 	}
 
 	/**
-	 * Exibe informa��es de todos os cen�rios cadastrados
+	 * Exibe informacoes de todos os cenarios cadastrados
 	 * 
-	 * @return representa��o textual de todos os cen�rios cadastrados
+	 * @return representacao textual de todos os cenarios cadastrados
 	 */
 	public String exibirCenarios() {
 		String retorno = "";
@@ -68,27 +70,20 @@ public class Controller {
 	}
 
 	/**
-	 * Cadastra uma aposta no cen�rio especificado
+	 * Cadastra uma aposta no cenario especificado
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
+	 *            o numero de identificacao do cenario
 	 * @param apostador
-	 *            � o nome do apostador
+	 *            o nome do apostador
 	 * @param valor
-	 *            � o valor da aposta em centavos
+	 *            O valor da aposta em centavos
 	 * @param previsao
-	 *            � a previs�o da aposta sobre o cen�rio
+	 *            Previsao da aposta sobre o cen�rio
 	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
-		if (cenario > listaCenarios.size() || listaCenarios.size() == 0) {
-			throw new IndexOutOfBoundsException ("Erro na consulta de cenario: Cenario nao cadastrado");
-		}
-		if (cenario <= 0) {
-			throw new IllegalArgumentException ("Erro no cadastro de aposta: Cenario invalido");
-		}
-		if (apostador == null || apostador.trim().equals("")) {
-			throw new IllegalArgumentException ("Apostador nao pode ser vazio ou nulo");
-		}
+		cenarioInvalidosExcecoes("Erro no cadastro de aposta: ", cenario);
+		apostaExcecoes("Erro no cadastro de aposta: ", apostador, valor, previsao);
 		Cenario meuCenario = getCenario(cenario);
 		Aposta aposta = new Aposta(apostador, valor, previsao);
 		meuCenario.getApostas().add(aposta);
@@ -101,7 +96,8 @@ public class Controller {
 	 *            � o n�mero de identifica��o do cen�rio
 	 * @return � o valor total das apostas do cen�rio em centavos
 	 */
-	public int valorTotalDasApostas(int cenario) {
+	public int valorTotalDeApostas(int cenario) {
+		cenarioInvalidosExcecoes("Erro na consulta do valor total de apostas: ", cenario);
 		int valor = 0;
 		Cenario meuCenario = getCenario(cenario);
 		Set<Aposta> apostasCenario = meuCenario.getApostas();
@@ -109,6 +105,13 @@ public class Controller {
 			valor += aposta.getValor();
 		}
 		return valor;
+	}
+
+	public int totalDeApostas(int cenario) {
+		cenarioInvalidosExcecoes("Erro na consulta do total de apostas: ", cenario);
+		Cenario meuCenario = getCenario(cenario);
+		int qtdApostas = meuCenario.getApostas().size();
+		return qtdApostas;
 	}
 
 	/**
@@ -137,12 +140,15 @@ public class Controller {
 	 *            especifica se o cen�rio ocorreu ou n�o
 	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
+		cenarioInvalidosExcecoes("Erro ao fechar aposta: ", cenario);
+		cenarioFechadoExcecao("Erro ao fechar aposta: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		if (ocorreu) {
 			meuCenario.setEstado(2);
 		} else {
 			meuCenario.setEstado(1);
 		}
+		this.caixa += getCaixaCenario(cenario);
 
 	}
 
@@ -172,13 +178,15 @@ public class Controller {
 	}
 
 	/**
-	 * Usa o m�todo valorTotalApostasPerdedoras para calcular o valor de um
-	 * cen�rio que ser� destinado ao caixa
+	 * Usa o metodo valorTotalApostasPerdedoras para calcular o valor de um
+	 * cenario que sea� destinado ao caixa
 	 * 
 	 * @param cenario
 	 * @return retorna o valor que er� destinado ao caixa em centavos
 	 */
 	public int getCaixaCenario(int cenario) {
+		cenarioInvalidosExcecoes("Erro na consulta do caixa do cenario: ", cenario);
+		cenarioAbertoExcecao("Erro na consulta do caixa do cenario: ", cenario);
 		int caixaCenario = (int) (valorTotalApostasPerdedoras(cenario) * taxa);
 		return caixaCenario;
 	}
@@ -187,10 +195,13 @@ public class Controller {
 	 * Usa os m�todos valorTotalApostasPerdedoras e getCaixaCenario para
 	 * retornar o valor total que ser� rateado entre os vencedores
 	 * 
-	 * @param cenario � o n�mero de identifica��o do cen�rio
+	 * @param cenario
+	 *            � o n�mero de identifica��o do cen�rio
 	 * @return valor total a ser rateado entre os vencedores, em centavos
 	 */
 	public int getTotalRateioCenario(int cenario) {
+		cenarioInvalidosExcecoes("Erro na consulta do total de rateio do cenario: ", cenario);
+		cenarioAbertoExcecao("Erro na consulta do total de rateio do cenario: ", cenario);
 		int totalRateioCenario = valorTotalApostasPerdedoras(cenario) - getCaixaCenario(cenario);
 		return totalRateioCenario;
 	}
@@ -204,14 +215,85 @@ public class Controller {
 	}
 
 	public Cenario getCenario(int numCenario) {
-		if (numCenario <= 0) {
-			throw new IllegalArgumentException("Erro na consulta de cenario: Cenario invalido");
-		}
-		if (numCenario > listaCenarios.size() || listaCenarios.size() == 0) {
-			throw new IndexOutOfBoundsException ("Erro na consulta de cenario: Cenario nao cadastrado");
-		}
 		Cenario cenario = listaCenarios.get(numCenario - 1);
 		return cenario;
+	}
+
+	public void cenarioInvalidosExcecoes(String representacao, int cenario) {
+		if (cenario <= 0) {
+			throw new IllegalArgumentException(representacao + "Cenario invalido");
+		}
+		if (cenario > listaCenarios.size()) {
+			throw new IllegalArgumentException(representacao + "Cenario nao cadastrado");
+		}
+	}
+
+	
+
+	public void cenarioFechadoExcecao(String representacao, int cenario) {
+		Cenario meuCenario = getCenario(cenario);
+		if (!meuCenario.getEstado().equals("Nao finalizado")) {
+			throw new RuntimeException(representacao + "Cenario ja esta fechado");
+		}
+	}
+	
+	public void cenarioAbertoExcecao(String representacao, int cenario) {
+		Cenario meuCenario = getCenario(cenario);
+		if (meuCenario.getEstado().equals("Nao finalizado")) {
+			throw new RuntimeException(representacao + "Cenario ainda esta aberto");
+		}
+	}
+
+	
+	public void apostaExcecoes(String representacao, String apostador, int valor, String previsao) {
+		if (apostador == null || apostador.trim().equals("")) {
+			throw new NullPointerException(representacao + "Apostador nao pode ser vazio ou nulo");
+		}
+		if (valor <= 0) {
+			throw new IllegalArgumentException(representacao + "Valor nao pode ser menor ou igual a zero");
+		}
+		if (previsao == null || previsao.trim().equals("")) {
+			throw new IllegalArgumentException(representacao + "Previsao nao pode ser vazia ou nula");
+		}
+		if (! (previsao.equalsIgnoreCase("VAI ACONTECER") || previsao.equalsIgnoreCase("N VAI ACONTECER"))) {
+			throw new IllegalArgumentException (representacao + "Previsao invalida");
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + caixa;
+		result = prime * result + indexCenarios;
+		result = prime * result + ((listaCenarios == null) ? 0 : listaCenarios.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(taxa);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Controller other = (Controller) obj;
+		if (caixa != other.caixa)
+			return false;
+		if (indexCenarios != other.indexCenarios)
+			return false;
+		if (listaCenarios == null) {
+			if (other.listaCenarios != null)
+				return false;
+		} else if (!listaCenarios.equals(other.listaCenarios))
+			return false;
+		if (Double.doubleToLongBits(taxa) != Double.doubleToLongBits(other.taxa))
+			return false;
+		return true;
 	}
 
 }

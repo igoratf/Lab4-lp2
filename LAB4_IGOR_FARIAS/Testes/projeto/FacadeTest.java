@@ -28,7 +28,7 @@ public class FacadeTest {
 		try {
 			facade.inicializa(-10, 0);
 		} catch (Exception e) {
-			assertEquals("caixa ou taxa invalidos", e.getMessage());
+			assertEquals("Erro na inicializacao: Caixa nao pode ser inferior a 0", e.getMessage());
 		}
 		try {
 			/*
@@ -36,7 +36,7 @@ public class FacadeTest {
 			 */
 			facade.inicializa(100, -1);
 		} catch (Exception e) {
-			assertEquals("caixa ou taxa invalidos", e.getMessage());
+			assertEquals("Erro na inicializacao: Taxa nao pode ser inferior a 0", e.getMessage());
 		}
 		try {
 			/*
@@ -44,7 +44,7 @@ public class FacadeTest {
 			 */
 			facade.inicializa(-10, 0.10);
 		} catch (Exception e) {
-			assertEquals("caixa ou taxa invalidos", e.getMessage());
+			assertEquals("Erro na inicializacao: Caixa nao pode ser inferior a 0", e.getMessage());
 		}
 		/*
 		 * Verifica se a cria��o de um controlador com caixa e taxa v�lidos est�
@@ -73,13 +73,13 @@ public class FacadeTest {
 		try {
 			facade.cadastrarCenario("     ");
 		} catch (Exception e) {
-			assertEquals("descricao invalida", e.getMessage());
+			assertEquals("Erro no cadastro de cenario: Descricao nao pode ser vazia", e.getMessage());
 		}
 		/*
 		 * Verifica se um cen�rio v�lido est� sendo cadastrado corretamente
 		 */
-		assertEquals(1, facade.cadastrarCenario("Todo mundo vai pagar c�lculo 2"));
-		assertEquals("Todo mundo vai pagar c�lculo 2", facade.controller.getCenario(1).getDescricao());
+		assertEquals(1, facade.cadastrarCenario("Todo mundo vai pagar calculo 2"));
+		assertEquals("Todo mundo vai pagar calculo 2", facade.controller.getCenario(1).getDescricao());
 	}
 
 	@Test
@@ -91,14 +91,14 @@ public class FacadeTest {
 		try {
 			facade.controller.getCenario(1);
 		} catch (Exception e) {
-			assertEquals("cenario invalido", e.getMessage());
+			assertEquals("Erro na consulta de cenario: Cenario nao cadastrado", e.getMessage());
 		}
 		/*
 		 * Verifica se a tentativa de exibi��o de um cen�rio v�lido est� sendo
 		 * realizada corretamente
 		 */
 		facade.cadastrarCenario("Rumo ao CRA 9");
-		String expected = "1 - Rumo ao CRA 9 - N�o finalizado" + Utilidades.LN;
+		String expected = "1 - Rumo ao CRA 9 - Nao finalizado";
 		assertEquals(expected, facade.exibirCenario(1));
 	}
 
@@ -129,7 +129,7 @@ public class FacadeTest {
 		try {
 			facade.cadastrarAposta(0, "Godzilla", 10, "n vai acontecer");
 		} catch (Exception e) {
-			assertEquals("cenario invalido", e.getMessage());
+			assertEquals("Erro no cadastro de aposta: Cenario invalido", e.getMessage());
 		}
 		/*
 		 * Verifica se a tentativa de cria��o de uma aposta com apostador nulo
@@ -138,7 +138,7 @@ public class FacadeTest {
 		try {
 			facade.cadastrarAposta(1, null, 100, "vai acontecer");
 		} catch (Exception e) {
-			assertEquals("apostador ou previsao nulos", e.getMessage());
+			assertEquals("Apostador nao pode ser vazio ou nulo", e.getMessage());
 		}
 		/*
 		 * Verifica se a tentativa de cria��o de uma aposta com valor inv�lido
@@ -165,7 +165,7 @@ public class FacadeTest {
 		try {
 			facade.cadastrarAposta(1, "  ", 100, "vai acontecer");
 		} catch (Exception e) {
-			assertEquals("apostador ou previsao vazios", e.getMessage());
+			assertEquals("Apostador nao pode ser vazio ou nulo", e.getMessage());
 		}
 		/*
 		 * Verifica se a tentativa de cria��o de uma aposta com previs�o vazia
@@ -187,15 +187,15 @@ public class FacadeTest {
 		facade.cadastrarCenario("Ganhar corrida");
 		facade.cadastrarAposta(1, "Mario do Armario", 24, "vai acontecer");
 		facade.cadastrarAposta(1, "Toad", 24, "n vai acontecer");
-		assertEquals(48, facade.valorTotalDasApostas(1));
+		assertEquals(48, facade.valorTotalDeApostas(1));
 		/*
 		 * Verifica se a tentativa de exibi��o do valor total das apostas para
 		 * um cen�rio inv�lido est� retornando exce��o
 		 */
 		try {
-			facade.valorTotalDasApostas(3);
+			facade.valorTotalDeApostas(3);
 		} catch (Exception e) {
-			assertEquals("cenario invalido", e.getMessage());
+			assertEquals("Erro na consulta de cenario: Cenario nao cadastrado", e.getMessage());
 		}
 		/*
 		 * Verifica se a tentativa de exibi��o do valor total das apostas para
@@ -205,7 +205,7 @@ public class FacadeTest {
 			facade.cadastrarCenario("Vai nada");
 			facade.cadastrarAposta(2, null, 10, "vai acontecer");
 		} catch (Exception e) {
-			assertEquals("apostador ou previsao nulos", e.getMessage());
+			assertEquals("Apostador nao pode ser vazio ou nulo", e.getMessage());
 		}
 	}
 
@@ -243,14 +243,14 @@ public class FacadeTest {
 	@Test
 	public void getCaixaCenarioTest() {
 		/*
-		 * Verifica se o valor destinado ao caixa ao fim de um cen�rio de
-		 * apostas est� correto
+		 * Verifica se o valor destinado ao caixa ao fim de um cenario de
+		 * apostas esta correto
 		 */
-		facade.cadastrarCenario("Ser� que um dia eu termino esse lab?");
+		facade.cadastrarCenario("Sera que um dia eu termino esse lab?");
 		facade.cadastrarAposta(1, "Eu", 1000, "vai acontecer");
-		facade.cadastrarAposta(1, "Snoop Dogg", 500, "n vai acontecer");
+		facade.cadastrarAposta(1, "Snoop Dogg", 10000, "n vai acontecer");
 		facade.fecharAposta(1, true);
-		assertEquals(5.0, facade.getCaixaCenario(1), 0.2);
+		assertEquals(100, facade.getCaixaCenario(1), 0.0);
 	}
 
 	@Test

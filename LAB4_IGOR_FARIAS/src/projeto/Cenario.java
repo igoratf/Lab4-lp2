@@ -50,7 +50,7 @@ public class Cenario {
 			retorno = "Nao finalizado";
 			break;
 		default:
-			retorno = "Estado inválido";
+			retorno = "Estado invalido";
 			break;
 		}
 		return retorno;

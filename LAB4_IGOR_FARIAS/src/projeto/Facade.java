@@ -80,8 +80,8 @@ public class Facade {
 	 *            � a numera��o que identifica o cen�rio
 	 * @return o valor total das apostas do cen�rio em centavos
 	 */
-	public int valorTotalDasApostas(int cenario) {
-		return controller.valorTotalDasApostas(cenario);
+	public int valorTotalDeApostas(int cenario) {
+		return controller.valorTotalDeApostas(cenario);
 	}
 
 	/**
@@ -92,6 +92,10 @@ public class Facade {
 	 *            � o n�mero de identifica��o do cen�rio
 	 * @return representa��o textual das apostas do cen�rio
 	 */
+	
+	public int totalDeApostas(int cenario) {
+		return controller.totalDeApostas(cenario);
+	}
 	public String exibeApostas(int cenario) {
 		return controller.exibeApostas(cenario);
 	}
