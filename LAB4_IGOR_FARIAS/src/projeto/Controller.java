@@ -192,7 +192,7 @@ public class Controller {
 		if (cenario <= 0) {
 			throw new IllegalArgumentException(representacao + "Cenario invalido");
 		}
-		if (cenario > listaCenarios.size()) {
+		if (cenario > listaCenarios.size() || listaCenarios.size() == 0) {
 			throw new IllegalArgumentException(representacao + "Cenario nao cadastrado");
 		}
 	}

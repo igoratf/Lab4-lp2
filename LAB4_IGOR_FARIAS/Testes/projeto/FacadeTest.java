@@ -121,7 +121,7 @@ public class FacadeTest {
 		 */
 		facade.cadastrarCenario("Pagar P2");
 		facade.cadastrarAposta(1, "Ash Ketchun", 1000, "VAI ACONTECER");
-		assertEquals(1, facade.controller.getCenario(1).getApostas().size());
+		assertEquals(1, facade.controller.getCenario(1).totalDeApostas());
 		/*
 		 * Verifica se a tentativa de cadastrar uma aposta em um cen�rio
 		 * inv�lido est� retornando exce��o
@@ -138,7 +138,7 @@ public class FacadeTest {
 		try {
 			facade.cadastrarAposta(1, null, 100, "vai acontecer");
 		} catch (Exception e) {
-			assertEquals("Apostador nao pode ser vazio ou nulo", e.getMessage());
+			assertEquals("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo", e.getMessage());
 		}
 		/*
 		 * Verifica se a tentativa de cria��o de uma aposta com valor inv�lido
