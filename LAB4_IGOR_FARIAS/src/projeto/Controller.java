@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Classe controladora que representa o sistema que irá administrar o
  * cadastramento de cenários e apostas e suas resoluções
  * 
- * @author Igor Farias
+ * @author Igor Farias - igor.farias@ccc.ufcg.edu.br
  *
  */
 

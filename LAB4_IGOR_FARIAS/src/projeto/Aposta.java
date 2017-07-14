@@ -1,10 +1,10 @@
 package projeto;
 /**
  * Classe correspondente a uma aposta, que possui o nome do apostador, um valor
- * associado em centavos e a previs�o que ir� determinar seu resultado no
- * cen�rio
+ * associado em centavos e a previsão que irá determinar seu resultado no
+ * cenário
  * 
- * @author Igor Farias
+ * @author Igor Farias - igor.farias@ccc.ufcg.edu.br
  *
  */
 public class Aposta {

@@ -2,10 +2,10 @@
 import java.util.ArrayList;
 
 /**
- * Classe correspondente ao cenÃ¡rio, que possuirÃ¡ uma numeraÃ§Ã£o, uma descriÃ§Ã£o,
- * um estado e um set de apostas que serÃ£o resolvidas
+ * Classe correspondente ao cenário, que possuirá uma numeração, uma descrição,
+ * um estado e uma lista de apostas que serão resolvidas
  * 
- * @author Igor Farias
+ * @author Igor Farias - igor.farias@ccc.ufcg.edu.br
  *
  */
 public class Cenario {
