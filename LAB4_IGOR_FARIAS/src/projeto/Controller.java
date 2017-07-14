@@ -1,4 +1,4 @@
-package projeto;
+﻿package projeto;
 
 import java.util.ArrayList;
 
@@ -31,8 +31,8 @@ public class Controller {
 	 * Cadastra um cenário para receber apostas
 	 * 
 	 * @param descricao
-	 *            � a situa��o do cen�rio que poder� acontecer ou n�o
-	 * @return o n�mero de identifica��o do cen�rio
+	 *            é a situação do cenário que poderá acontecer ou não
+	 * @return o número de identificação do cenário
 	 */
 	public int cadastrarCenario(String descricao) {
 		int numCenario = indexCenarios + 1;
@@ -43,11 +43,11 @@ public class Controller {
 	}
 
 	/**
-	 * Exibe informacoes de um cenario
+	 * Exibe informações de um cenario
 	 * 
 	 * @param cenario
-	 *            o numero de identificacao do cenario
-	 * @return representacao textual do cenario
+	 *            o número de identificação do cenário
+	 * @return representação textual do cenário
 	 */
 	public String exibirCenario(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta de cenario: ", cenario);
@@ -56,9 +56,9 @@ public class Controller {
 	}
 
 	/**
-	 * Exibe informacoes de todos os cenarios cadastrados
+	 * Exibe informações de todos os cenarios cadastrados
 	 * 
-	 * @return representacao textual de todos os cenarios cadastrados
+	 * @return representação textual de todos os cenários cadastrados
 	 */
 	public String exibirCenarios() {
 		String retorno = "";
@@ -72,13 +72,13 @@ public class Controller {
 	 * Cadastra uma aposta no cenário especificado
 	 * 
 	 * @param cenario
-	 *            o número de identificação do cenário
+	 *            é o número de identificação cenário
 	 * @param apostador
-	 *            o nome do apostador
+	 *            é o nome do apostador
 	 * @param valor
-	 *            O valor da aposta em centavos
+	 *            é o valor da aposta em centavos
 	 * @param previsao
-	 *            Previsao da aposta sobre o cen�rio
+	 *            é a previsão da aposta sobre o cenário
 	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta: ", cenario);
@@ -88,11 +88,12 @@ public class Controller {
 	}
 
 	/**
-	 * Retorna o valor total das apostas de um cen�rio
+	 * Chama o método valorTotalDeApostas da classe Cenario para retornar o
+	 * valor total das apostas de um cenário
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
-	 * @return � o valor total das apostas do cen�rio em centavos
+	 *            é o número de identificação do cenário
+	 * @return é o valor total das apostas do cenário em centavos
 	 */
 	public int valorTotalDeApostas(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do valor total de apostas: ", cenario);
@@ -100,6 +101,14 @@ public class Controller {
 		return meuCenario.valorTotalDeApostas();
 	}
 
+	/**
+	 * Chama o método totalDeApostas de Cenario para retornar a quantidade de
+	 * apostas do cenário
+	 * 
+	 * @param cenario
+	 *            é o número de identificação do cenário
+	 * @return quantidade de apostas do cenário em inteiro
+	 */
 	public int totalDeApostas(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do total de apostas: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
@@ -107,11 +116,12 @@ public class Controller {
 	}
 
 	/**
-	 * Exibe todas as apostas de um cen�rio
+	 * Chama o método exibeApostas de Cenario para exibir todas as apostas de um
+	 * cenário
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
-	 * @return representa��o textual de todas as apostas do cen�rio
+	 *            é o número de identificação do cenário
+	 * @return representação textual de todas as apostas de um cenário
 	 */
 	public String exibeApostas(int cenario) {
 		Cenario meuCenario = getCenario(cenario);
@@ -119,12 +129,13 @@ public class Controller {
 	}
 
 	/**
-	 * Finaliza um cen�rio de apostas
+	 * Chama o método fecharAposta de Cenario para finalizar o cenário de
+	 * apostas
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
+	 *            é o número de identificação do cenário
 	 * @param ocorreu
-	 *            especifica se o cen�rio ocorreu ou n�o
+	 *            especifica se o cenário ocorreu ou não
 	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
 		cenarioInvalidosExcecoes("Erro ao fechar aposta: ", cenario);
@@ -135,10 +146,11 @@ public class Controller {
 	}
 
 	/**
-	 * Retorna o valor total das apostas perdedoras
+	 * Retorna o valor total das apostas perdedoras a partir do método
+	 * valorTotalApostasPerdedoras de Cenario
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
+	 *            é o número de identificação do cenário
 	 * @return o valor total das apostas perdedoras
 	 */
 	public int valorTotalApostasPerdedoras(int cenario) {
@@ -148,10 +160,10 @@ public class Controller {
 
 	/**
 	 * Usa o metodo valorTotalApostasPerdedoras para calcular o valor de um
-	 * cenario que sea� destinado ao caixa
+	 * cenario que será destinado ao caixa
 	 * 
 	 * @param cenario
-	 * @return retorna o valor que er� destinado ao caixa em centavos
+	 * @return retorna o valor que será destinado ao caixa em centavos
 	 */
 	public int getCaixaCenario(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta do caixa do cenario: ", cenario);
@@ -161,11 +173,11 @@ public class Controller {
 	}
 
 	/**
-	 * Usa os m�todos valorTotalApostasPerdedoras e getCaixaCenario para
-	 * retornar o valor total que ser� rateado entre os vencedores
+	 * Usa os métodos valorTotalApostasPerdedoras e getCaixaCenario para
+	 * retornar o valor total que será rateado entre os vencedores
 	 * 
 	 * @param cenario
-	 *            � o n�mero de identifica��o do cen�rio
+	 *            é o número de identificação do cenário
 	 * @return valor total a ser rateado entre os vencedores, em centavos
 	 */
 	public int getTotalRateioCenario(int cenario) {
@@ -187,7 +199,12 @@ public class Controller {
 		Cenario cenario = listaCenarios.get(numCenario - 1);
 		return cenario;
 	}
-
+	
+	/**
+	 * Verifica se o cenário é válido a partir de seu número
+	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
+	 * @param cenario é o número de identificação do cenário
+	 */
 	public void cenarioInvalidosExcecoes(String representacao, int cenario) {
 		if (cenario <= 0) {
 			throw new IllegalArgumentException(representacao + "Cenario invalido");
@@ -196,9 +213,12 @@ public class Controller {
 			throw new IllegalArgumentException(representacao + "Cenario nao cadastrado");
 		}
 	}
-
 	
-
+	/**
+	 * Verifica se um cenário já está fechado e lança exceção
+	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
+	 * @param cenario é o número de identificação do cenário
+	 */
 	public void cenarioFechadoExcecao(String representacao, int cenario) {
 		Cenario meuCenario = getCenario(cenario);
 		if (!meuCenario.getEstado().equals("Nao finalizado")) {
@@ -206,14 +226,25 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Verifica se um cenário ainda está aberto e lança exceção
+	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
+	 * @param cenario é o número de identificação do cenário
+	 */
 	public void cenarioAbertoExcecao(String representacao, int cenario) {
 		Cenario meuCenario = getCenario(cenario);
 		if (meuCenario.getEstado().equals("Nao finalizado")) {
 			throw new RuntimeException(representacao + "Cenario ainda esta aberto");
 		}
 	}
-
 	
+	/**
+	 * Verifica se a aposta é válida e lança exceção se não for
+	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
+	 * @param apostador é o nome do apostador
+	 * @param valor é o valor da aposta em centavos
+	 * @param previsao é a previsão da aposta
+	 */
 	public void apostaExcecoes(String representacao, String apostador, int valor, String previsao) {
 		if (apostador == null || apostador.trim().equals("")) {
 			throw new NullPointerException(representacao + "Apostador nao pode ser vazio ou nulo");
@@ -224,8 +255,8 @@ public class Controller {
 		if (previsao == null || previsao.trim().equals("")) {
 			throw new IllegalArgumentException(representacao + "Previsao nao pode ser vazia ou nula");
 		}
-		if (! (previsao.equalsIgnoreCase("VAI ACONTECER") || previsao.equalsIgnoreCase("N VAI ACONTECER"))) {
-			throw new IllegalArgumentException (representacao + "Previsao invalida");
+		if (!(previsao.equalsIgnoreCase("VAI ACONTECER") || previsao.equalsIgnoreCase("N VAI ACONTECER"))) {
+			throw new IllegalArgumentException(representacao + "Previsao invalida");
 		}
 	}
 

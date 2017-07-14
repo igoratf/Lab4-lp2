@@ -1,7 +1,7 @@
-package projeto;
+﻿package projeto;
 /**
- * Classe de fachada, possui métodos de uso geral e utiliza o sistema
- * para realizar as ações
+ * Classe de fachada, possui mÃ©todos de uso geral e utiliza o sistema
+ * para realizar as aÃ§Ãµes
  */
 public class Facade {
 
@@ -11,9 +11,9 @@ public class Facade {
 	 * Inicializa o sistema, instanciando o controlador
 	 * 
 	 * @param caixa
-	 *            é o valor inicial do caixa do sistema, em centavos
+	 *            Ã© o valor inicial do caixa do sistema, em centavos
 	 * @param taxa
-	 *            é a taxa que será cobrada das apostas perdedoras pelo sistema
+	 *            Ã© a taxa que serÃ¡ cobrada das apostas perdedoras pelo sistema
 	 *            para adicionar certo valor ao caixa
 	 */
 	public void inicializa(int caixa, double taxa) {
@@ -21,51 +21,51 @@ public class Facade {
 	}
 
 	/**
-	 * Chama o método cadastrarCenario do controlador para cadastrar um cenário
+	 * Chama o mÃ©todo cadastrarCenario do controlador para cadastrar um cenÃ¡rio
 	 * 
 	 * @param descricao
-	 *            é a possível situação futura que o cenário descreve
-	 * @return retorna o número de identificação do cenário
+	 *            Ã© a possÃ­vel situaÃ§Ã£o futura que o cenÃ¡rio descreve
+	 * @return retorna o nÃºmero de identificaÃ§Ã£o do cenÃ¡rio
 	 */
 	public int cadastrarCenario(String descricao) {
 		return controller.cadastrarCenario(descricao);
 	}
 
 	/**
-	 * Chama o método exibirCenario do controlador para exibir informações de um
-	 * cenário de apostas a partir de sua numeração
+	 * Chama o mÃ©todo exibirCenario do controlador para exibir informaÃ§Ãµes de um
+	 * cenÃ¡rio de apostas a partir de sua numeraÃ§Ã£o
 	 * 
 	 * @param cenario
-	 *            é a numeração que identifica o cenário
-	 * @return retorna uma representação textual do cenário
+	 *            Ã© a numeraÃ§Ã£o que identifica o cenÃ¡rio
+	 * @return retorna uma representaÃ§Ã£o textual do cenÃ¡rio
 	 */
 	public String exibirCenario(int cenario) {
 		return controller.exibirCenario(cenario);
 	}
 
 	/**
-	 * Chama o método exibirCenarios do controlador para exibir informações de
-	 * todos os cenários cadastrados
+	 * Chama o mÃ©todo exibirCenarios do controlador para exibir informaÃ§Ãµes de
+	 * todos os cenÃ¡rios cadastrados
 	 * 
-	 * @return representação textual de todos os cenários
+	 * @return representaÃ§Ã£o textual de todos os cenÃ¡rios
 	 */
 	public String exibirCenarios() {
 		return controller.exibirCenarios();
 	}
 
 	/**
-	 * Chama o método cadastrarAposta do controlador para cadastrar uma aposta
-	 * em um determinado cenário
+	 * Chama o mÃ©todo cadastrarAposta do controlador para cadastrar uma aposta
+	 * em um determinado cenÃ¡rio
 	 * 
 	 * @param cenario
-	 *            é a numeração que identifica o cenário que irá receber a
+	 *            Ã© a numeraÃ§Ã£o que identifica o cenÃ¡rio que irÃ¡ receber a
 	 *            aposta
 	 * @param apostador
-	 *            é o nome do apostador
+	 *            Ã© o nome do apostador
 	 * @param valor
-	 *            é o valor da aposta, em centavos
+	 *            Ã© o valor da aposta, em centavos
 	 * @param previsao
-	 *            é o palpite da aposta para a situa��o futura
+	 *            Ã© o palpite da aposta para a situaï¿½ï¿½o futura
 	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor,
 			String previsao) {
@@ -73,24 +73,24 @@ public class Facade {
 	}
 
 	/**
-	 * Chama o método valorTotalDasApostas do controlador para retornar o valor
-	 * total das apostas de um cenário, identificado por sua numeração
+	 * Chama o mÃ©todo valorTotalDasApostas do controlador para retornar o valor
+	 * total das apostas de um cenÃ¡rio, identificado por sua numeraÃ§Ã£o
 	 * 
 	 * @param cenario
-	 *            é a numeração que identifica o cenário
-	 * @return o valor total das apostas do cenário em centavos
+	 *            Ã© a numeraÃ§Ã£o que identifica o cenÃ¡rio
+	 * @return o valor total das apostas do cenÃ¡rio em centavos
 	 */
 	public int valorTotalDeApostas(int cenario) {
 		return controller.valorTotalDeApostas(cenario);
 	}
 
 	/**
-	 * Chama o método exibirApostas do controlador para exibir informações das
-	 * apostas de um cenário
+	 * Chama o mÃ©todo exibirApostas do controlador para exibir informaÃ§Ãµes das
+	 * apostas de um cenÃ¡rio
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
-	 * @return representação textual das apostas do cenário
+	 *            Ã© o nÃºmero de identificaÃ§Ã£o do cenÃ¡rio
+	 * @return representaÃ§Ã£o textual das apostas do cenÃ¡rio
 	 */
 	
 	public int totalDeApostas(int cenario) {
@@ -101,12 +101,12 @@ public class Facade {
 	}
 
 	/**
-	 * Finaliza um cenário de apostas
+	 * Finaliza um cenÃ¡rio de apostas
 	 * 
 	 * @param cenario
-	 *            é o número de identificação do cenário
+	 *            Ã© o nÃºmero de identificaÃ§Ã£o do cenÃ¡rio
 	 * @param ocorreu
-	 *            determina se o cenário ocorreu ou não
+	 *            determina se o cenÃ¡rio ocorreu ou nÃ£o
 	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
 		controller.fecharAposta(cenario, ocorreu);
