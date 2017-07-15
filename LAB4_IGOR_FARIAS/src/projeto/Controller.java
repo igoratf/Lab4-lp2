@@ -81,8 +81,9 @@ public class Controller {
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta: ", cenario);
 		apostaExcecoes("Erro no cadastro de aposta: ", apostador, valor, previsao);
+		Aposta aposta = new Aposta(apostador, valor, previsao);
 		Cenario meuCenario = getCenario(cenario);
-		meuCenario.cadastrarAposta(apostador, valor, previsao);
+		meuCenario.cadastrarAposta(aposta);
 	}
 
 	/**
@@ -144,21 +145,9 @@ public class Controller {
 	}
 
 	/**
-	 * Retorna o valor total das apostas perdedoras a partir do método
-	 * valorTotalApostasPerdedoras de Cenario
+	 * Retorna o valor em caixa do cenário que será destinado ao caixa do
+	 * sistema
 	 * 
-	 * @param cenario
-	 *            é o número de identificação do cenário
-	 * @return o valor total das apostas perdedoras
-	 */
-	public int valorTotalApostasPerdedoras(int cenario) {
-		Cenario meuCenario = getCenario(cenario);
-		return meuCenario.valorTotalApostasPerdedoras();
-	}
-
-	/**
-	 * Usa o metodo valorTotalApostasPerdedoras para calcular o valor de um
-	 * cenario que será destinado ao caixa
 	 * 
 	 * @param cenario
 	 * @return retorna o valor que será destinado ao caixa em centavos
@@ -171,8 +160,8 @@ public class Controller {
 	}
 
 	/**
-	 * Usa os métodos valorTotalApostasPerdedoras e getCaixaCenario para
-	 * retornar o valor total que será rateado entre os vencedores
+	 * Retorna o valor que será destinado ao rateio dos vencedores do cenário de
+	 * apostas
 	 * 
 	 * @param cenario
 	 *            é o número de identificação do cenário
@@ -184,11 +173,14 @@ public class Controller {
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getTotalRateioCenario();
 	}
-	
+
 	/**
 	 * Cadastra um Cenário Bônus
-	 * @param descricao é a situação possível do cenário
-	 * @param bonus é o bônus do cenário
+	 * 
+	 * @param descricao
+	 *            é a situação possível do cenário
+	 * @param bonus
+	 *            é o bônus do cenário
 	 * @return a numeração do cenário
 	 */
 	public int cadastrarCenario(String descricao, int bonus) {
@@ -197,7 +189,7 @@ public class Controller {
 		this.caixa -= bonus;
 		return getNumCenario(cenario);
 	}
-	
+
 	public int getCaixa() {
 		return caixa;
 	}
@@ -210,15 +202,18 @@ public class Controller {
 		Cenario cenario = listaCenarios.get(numCenario - 1);
 		return cenario;
 	}
-	
+
 	public int getNumCenario(Cenario cenario) {
 		return listaCenarios.indexOf(cenario) + 1;
 	}
-	
+
 	/**
 	 * Verifica se o cenário é válido a partir de seu número
-	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
-	 * @param cenario é o número de identificação do cenário
+	 * 
+	 * @param representacao
+	 *            é o texto que referencia o método em que foi lançado a exceção
+	 * @param cenario
+	 *            é o número de identificação do cenário
 	 */
 	public void cenarioInvalidosExcecoes(String representacao, int cenario) {
 		if (cenario <= 0) {
@@ -228,12 +223,14 @@ public class Controller {
 			throw new IllegalArgumentException(representacao + "Cenario nao cadastrado");
 		}
 	}
-	
-	
+
 	/**
 	 * Verifica se um cenário já está fechado e lança exceção
-	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
-	 * @param cenario é o número de identificação do cenário
+	 * 
+	 * @param representacao
+	 *            é o texto que referencia o método em que foi lançado a exceção
+	 * @param cenario
+	 *            é o número de identificação do cenário
 	 */
 	public void cenarioFechadoExcecao(String representacao, int cenario) {
 		Cenario meuCenario = getCenario(cenario);
@@ -241,11 +238,14 @@ public class Controller {
 			throw new RuntimeException(representacao + "Cenario ja esta fechado");
 		}
 	}
-	
+
 	/**
 	 * Verifica se um cenário ainda está aberto e lança exceção
-	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
-	 * @param cenario é o número de identificação do cenário
+	 * 
+	 * @param representacao
+	 *            é o texto que referencia o método em que foi lançado a exceção
+	 * @param cenario
+	 *            é o número de identificação do cenário
 	 */
 	public void cenarioAbertoExcecao(String representacao, int cenario) {
 		Cenario meuCenario = getCenario(cenario);
@@ -253,13 +253,18 @@ public class Controller {
 			throw new RuntimeException(representacao + "Cenario ainda esta aberto");
 		}
 	}
-	
+
 	/**
 	 * Verifica se a aposta é válida e lança exceção se não for
-	 * @param representacao é o texto que referencia o método em que foi lançado a exceção
-	 * @param apostador é o nome do apostador
-	 * @param valor é o valor da aposta em centavos
-	 * @param previsao é a previsão da aposta
+	 * 
+	 * @param representacao
+	 *            é o texto que referencia o método em que foi lançado a exceção
+	 * @param apostador
+	 *            é o nome do apostador
+	 * @param valor
+	 *            é o valor da aposta em centavos
+	 * @param previsao
+	 *            é a previsão da aposta
 	 */
 	public void apostaExcecoes(String representacao, String apostador, int valor, String previsao) {
 		if (apostador == null || apostador.trim().equals("")) {
@@ -274,6 +279,25 @@ public class Controller {
 		if (!(previsao.equalsIgnoreCase("VAI ACONTECER") || previsao.equalsIgnoreCase("N VAI ACONTECER"))) {
 			throw new IllegalArgumentException(representacao + "Previsao invalida");
 		}
+	}
+	
+	/**
+	 * Cadastra uma aposta assegurada pelo valor
+	 * @param cenario é o número de identificação do cenário
+	 * @param apostador é o nome do apostador
+	 * @param valor é o valor da aposta
+	 * @param previsao é a previsão da aposta para o possível cenário
+	 * @param valorSeguro é o valor do seguro da aposta
+	 * @param custo é o custo para o seguro da aposta
+	 * @return número de identificação da aposta
+	 */
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro,
+			int custo) {
+		Aposta apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro);
+		this.caixa += custo;
+		Cenario meuCenario = getCenario(cenario);
+		meuCenario.cadastrarAposta(apostaSeguraVal);
+		return ((ApostaSeguraValor) (apostaSeguraVal)).getIdApostaSegura();
 	}
 
 	@Override
