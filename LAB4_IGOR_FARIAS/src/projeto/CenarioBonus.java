@@ -20,6 +20,7 @@ public class CenarioBonus extends Cenario {
 		return retorno;
 	}
 	
+	
 	public int getCaixaCenario() {
 		return super.getCaixaCenario();
 	}

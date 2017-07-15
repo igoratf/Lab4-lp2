@@ -63,7 +63,7 @@ public class FacadeTest {
 		try {
 			facade.cadastrarCenario(null);
 		} catch (Exception e) {
-			assertEquals("descricao nula", e.getMessage());
+			assertEquals("Erro no cadastro de cenario: Descricao nao pode ser nula", e.getMessage());
 		}
 		/*
 		 * Verifica se a criação de um cenário com descrição vazia está
