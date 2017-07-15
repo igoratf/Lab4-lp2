@@ -113,6 +113,10 @@ public class Facade {
 	public void fecharAposta(int cenario, boolean ocorreu) {
 		controller.fecharAposta(cenario, ocorreu);
 	}
+	
+	public int cadastrarCenario(String descricao, int bonus) {
+		return controller.cadastrarCenario(descricao, bonus);
+	}
 
 	public int getCaixaCenario(int cenario) {
 		return controller.getCaixaCenario(cenario);

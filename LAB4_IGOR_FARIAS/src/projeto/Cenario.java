@@ -10,31 +10,23 @@ import java.util.ArrayList;
  */
 public class Cenario {
 	private ArrayList<Aposta> apostas = new ArrayList<>();
-	private int numeracao;
 	private String descricao;
 	private int estado;
 	private int caixaCenario;
 	private int totalRateioCenario;
 
-	public Cenario(int numeracao, String descricao) {
+	public Cenario(String descricao) {
 		if (descricao == null) {
-			throw new NullPointerException("descricao nula");
+			throw new NullPointerException("Erro no cadastro de cenario: Descricao nao pode ser nula");
 		}
 		if (descricao.trim().equals("")) {
 			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		}
-		if (numeracao <= 0) {
-			throw new IllegalArgumentException("numeracao invalida");
-		}
-		this.numeracao = numeracao;
 		this.descricao = descricao;
 		this.estado = 0;
 	}
 
-	public int getNumeracao() {
-		return numeracao;
-	}
-
+	
 	public String getDescricao() {
 		return descricao;
 	}
@@ -63,7 +55,7 @@ public class Cenario {
 	@Override
 	public String toString() {
 		String retorno = "";
-		retorno += getNumeracao() + " - " + getDescricao() + " - " + getEstado();
+		retorno += getDescricao() + " - " + getEstado();
 		return retorno;
 	}
 	

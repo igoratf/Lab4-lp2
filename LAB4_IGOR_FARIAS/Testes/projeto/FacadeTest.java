@@ -1,4 +1,5 @@
 package projeto;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -46,8 +47,7 @@ public class FacadeTest {
 			assertEquals("Erro na inicializacao: Caixa nao pode ser inferior a 0", e.getMessage());
 		}
 		/*
-		 * Verifica se um sistema com caixa e taxa válidos está
-		 * inicializando
+		 * Verifica se um sistema com caixa e taxa válidos está inicializando
 		 */
 		facade.inicializa(100, 0.01);
 		assertEquals(100, facade.getCaixa());
@@ -107,9 +107,9 @@ public class FacadeTest {
 		 * Verifica se a exibição dos cenários está acontecendo corretamente
 		 */
 		facade.cadastrarCenario("Conseguir uma bolsa");
-		facade.cadastrarCenario("Pagar todas as cadeiras por media");
+		facade.cadastrarCenario("Pagar tudo com 10");
 		String actual = facade.exibirCenarios();
-		String expected = facade.controller.getCenario(1).toString() + facade.controller.getCenario(2).toString();
+		String expected = facade.controller.exibirCenario(1) + Utilidades.LN + facade.controller.exibirCenario(2) + Utilidades.LN;
 		assertEquals(expected, actual);
 	}
 
@@ -212,7 +212,7 @@ public class FacadeTest {
 	public void exibeApostasTest() {
 		/*
 		 * Verifica se a representação textual das apostas de um cenário está
-		 * funcionando. 
+		 * funcionando.
 		 */
 		facade.cadastrarCenario("Zerando a vida");
 		facade.cadastrarAposta(1, "Eu", 999, "vai acontecer");
@@ -262,5 +262,19 @@ public class FacadeTest {
 		facade.cadastrarAposta(1, "Pessimista", 2000, "n vai acontecer");
 		facade.fecharAposta(1, true);
 		assertEquals(1980, facade.getTotalRateioCenario(1));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	/*
+	 * Verifica se o cadastro de um cenário bônus com bônus inválido retorna exceção
+	 */
+	public void cadastraCenarioBonusTest() {
+		facade.cadastrarCenario("Cadastrando cenário bônus", -2200);
+	
+		facade.cadastrarCenario("Cassino Royale", 30000);
+	/*
+	 * Verifica se o cadastro de um cenário bônus válido está ocorrendo corretamente
+	 */
+		assertEquals("Cassino Royale", facade.controller.getCenario(2).getDescricao());
 	}
 }

@@ -35,11 +35,9 @@ public class Controller {
 	 * @return o número de identificação do cenário
 	 */
 	public int cadastrarCenario(String descricao) {
-		int numCenario = indexCenarios + 1;
-		Cenario cenario = new Cenario(numCenario, descricao);
-		listaCenarios.add(indexCenarios, cenario);
-		indexCenarios++;
-		return numCenario;
+		Cenario cenario = new Cenario(descricao);
+		listaCenarios.add(cenario);
+		return getNumCenario(cenario);
 	}
 
 	/**
@@ -52,7 +50,7 @@ public class Controller {
 	public String exibirCenario(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta de cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		return meuCenario.toString().trim();
+		return Integer.toString(getNumCenario(meuCenario)) + " - " + meuCenario.toString();
 	}
 
 	/**
@@ -63,7 +61,7 @@ public class Controller {
 	public String exibirCenarios() {
 		String retorno = "";
 		for (Cenario cenario : listaCenarios) {
-			retorno += cenario.toString();
+			retorno += Integer.toString(getNumCenario(cenario)) + " - " + cenario.toString() + Utilidades.LN;
 		}
 		return retorno;
 	}
@@ -186,7 +184,20 @@ public class Controller {
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getTotalRateioCenario();
 	}
-
+	
+	/**
+	 * Cadastra um Cenário Bônus
+	 * @param descricao é a situação possível do cenário
+	 * @param bonus é o bônus do cenário
+	 * @return a numeração do cenário
+	 */
+	public int cadastrarCenario(String descricao, int bonus) {
+		Cenario cenario = new CenarioBonus(descricao, bonus);
+		listaCenarios.add(cenario);
+		this.caixa -= bonus;
+		return getNumCenario(cenario);
+	}
+	
 	public int getCaixa() {
 		return caixa;
 	}
@@ -198,6 +209,10 @@ public class Controller {
 	public Cenario getCenario(int numCenario) {
 		Cenario cenario = listaCenarios.get(numCenario - 1);
 		return cenario;
+	}
+	
+	public int getNumCenario(Cenario cenario) {
+		return listaCenarios.indexOf(cenario) + 1;
 	}
 	
 	/**
@@ -213,6 +228,7 @@ public class Controller {
 			throw new IllegalArgumentException(representacao + "Cenario nao cadastrado");
 		}
 	}
+	
 	
 	/**
 	 * Verifica se um cenário já está fechado e lança exceção
