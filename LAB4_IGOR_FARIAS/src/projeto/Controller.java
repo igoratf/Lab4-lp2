@@ -297,7 +297,15 @@ public class Controller {
 		this.caixa += custo;
 		Cenario meuCenario = getCenario(cenario);
 		meuCenario.cadastrarAposta(apostaSeguraVal);
-		return ((ApostaSeguraValor) (apostaSeguraVal)).getIdApostaSegura();
+		return ((ApostaSegura) (apostaSeguraVal)).getIdApostaSegura();
+	}
+	
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa, int custo) {
+		Aposta apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa);
+		this.caixa += custo;
+		Cenario meuCenario = getCenario(cenario);
+		meuCenario.cadastrarAposta(apostaSeguraTaxa);
+		return ((ApostaSegura) apostaSeguraTaxa).getIdApostaSegura();
 	}
 
 	@Override

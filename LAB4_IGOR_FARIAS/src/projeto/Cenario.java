@@ -15,7 +15,6 @@ public class Cenario {
 	private int estado;
 	private int caixaCenario;
 	private int totalRateioCenario;
-	private int idApostaSegura;
 
 	public Cenario(String descricao) {
 		if (descricao == null) {
@@ -41,10 +40,10 @@ public class Cenario {
 	 *            é a previsão da aposta
 	 */
 	public void cadastrarAposta(Aposta aposta) {
-		if (aposta instanceof ApostaSeguraValor) {
-			((ApostaSeguraValor) aposta).setIdApostaSegura(idApostaSegura++);
-		}
 		this.apostas.add(aposta);
+		if (aposta instanceof ApostaSegura) {
+			((ApostaSegura) aposta).setIdApostaSegura(apostas.indexOf(aposta));
+		}
 	}
 
 	/**
@@ -105,6 +104,9 @@ public class Cenario {
 					if (aposta instanceof ApostaSeguraValor) {
 						caixaCenario -= ((ApostaSeguraValor) aposta).getValorSeguro();
 					}
+					else if (aposta instanceof ApostaSeguraTaxa) {
+						caixaCenario -= ((ApostaSeguraTaxa) aposta).getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
+					}
 				}
 			}
 
@@ -114,6 +116,9 @@ public class Cenario {
 					totalRateioCenario += aposta.getValor() - caixaCenario;
 					if (aposta instanceof ApostaSeguraValor) {
 						caixaCenario -= ((ApostaSeguraValor) aposta).getValorSeguro();
+					}
+					else if (aposta instanceof ApostaSeguraTaxa) {
+						caixaCenario -= ((ApostaSeguraTaxa) aposta).getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
 					}
 				}
 			}
@@ -159,6 +164,10 @@ public class Cenario {
 
 	public int getTotalRateioCenario() {
 		return this.totalRateioCenario;
+	}
+	
+	public Aposta getApostaSegura(int id) {
+		return apostas.get(id);
 	}
 
 }
