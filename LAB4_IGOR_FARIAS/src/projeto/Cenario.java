@@ -90,6 +90,7 @@ public class Cenario {
 	 *            é a taxa referente ao sistema
 	 */
 	public void fecharAposta(boolean ocorreu, double taxa) {
+		int valorTotalSeguros = 0;
 		int valorApostasPerdidas = 0;
 		if (ocorreu) {
 			this.estado = 2;
@@ -103,10 +104,10 @@ public class Cenario {
 					valorApostasPerdidas += aposta.getValor();
 					caixaCenario += aposta.getValor() * taxa;
 					if (aposta instanceof ApostaSeguraValor) {
-						caixaCenario -= ((ApostaSeguraValor) aposta).getValorSeguro();
+						valorTotalSeguros += ((ApostaSeguraValor) aposta).getValorSeguro();
 					}
 					else if (aposta instanceof ApostaSeguraTaxa) {
-						caixaCenario -= aposta.getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
+						valorTotalSeguros += aposta.getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
 					}
 				}
 			}
@@ -116,15 +117,15 @@ public class Cenario {
 					valorApostasPerdidas += aposta.getValor();
 					caixaCenario += aposta.getValor() * taxa;
 					if (aposta instanceof ApostaSeguraValor) {
-						caixaCenario -= ((ApostaSeguraValor) aposta).getValorSeguro();
+						valorTotalSeguros += ((ApostaSeguraValor) aposta).getValorSeguro();
 					}
 					else if (aposta instanceof ApostaSeguraTaxa) {
-						caixaCenario -= ((ApostaSeguraTaxa) aposta).getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
+						valorTotalSeguros += ((ApostaSeguraTaxa) aposta).getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
 					}
 				}
 			}
 		}
-		totalRateioCenario = valorApostasPerdidas - caixaCenario;
+		totalRateioCenario = valorApostasPerdidas - caixaCenario - valorTotalSeguros;
 
 	}
 
