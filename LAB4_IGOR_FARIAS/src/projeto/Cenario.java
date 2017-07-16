@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Cenario {
-	protected ArrayList<Aposta> apostas = new ArrayList<>();
+	private ArrayList<Aposta> apostas = new ArrayList<>();
 	private String descricao;
 	private int estado;
 	private int caixaCenario;
@@ -90,6 +90,7 @@ public class Cenario {
 	 *            é a taxa referente ao sistema
 	 */
 	public void fecharAposta(boolean ocorreu, double taxa) {
+		int valorApostasPerdidas = 0;
 		if (ocorreu) {
 			this.estado = 2;
 		} else {
@@ -99,21 +100,21 @@ public class Cenario {
 		for (Aposta aposta : apostas) {
 			if (this.estado == 2) {
 				if (aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) {
+					valorApostasPerdidas += aposta.getValor();
 					caixaCenario += aposta.getValor() * taxa;
-					totalRateioCenario += aposta.getValor() - caixaCenario;
 					if (aposta instanceof ApostaSeguraValor) {
 						caixaCenario -= ((ApostaSeguraValor) aposta).getValorSeguro();
 					}
 					else if (aposta instanceof ApostaSeguraTaxa) {
-						caixaCenario -= ((ApostaSeguraTaxa) aposta).getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
+						caixaCenario -= aposta.getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
 					}
 				}
 			}
 
 			else if (this.estado == 1) {
 				if (aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER")) {
+					valorApostasPerdidas += aposta.getValor();
 					caixaCenario += aposta.getValor() * taxa;
-					totalRateioCenario += aposta.getValor() - caixaCenario;
 					if (aposta instanceof ApostaSeguraValor) {
 						caixaCenario -= ((ApostaSeguraValor) aposta).getValorSeguro();
 					}
@@ -123,6 +124,7 @@ public class Cenario {
 				}
 			}
 		}
+		totalRateioCenario = valorApostasPerdidas - caixaCenario;
 
 	}
 

@@ -3,8 +3,8 @@ package projeto;
 public class ApostaSeguraTaxa extends ApostaSegura {
 	private double taxaSeguro;
 	
-	public ApostaSeguraTaxa (String apostador, int valor, String previsao, double taxa) {
-		super(apostador, valor, previsao);
+	public ApostaSeguraTaxa (String apostador, int valor, String previsao, double taxa, int custo) {
+		super(apostador, valor, previsao, custo);
 		this.setTipo("TAXA");
 		this.taxaSeguro = taxa;
 	}
@@ -22,6 +22,14 @@ public class ApostaSeguraTaxa extends ApostaSegura {
 	
 	public void setTaxaSeguro(double taxa) {
 		this.taxaSeguro = taxa;
+	}
+	
+	public int getCusto() {
+		return super.getCusto();
+	}
+	
+	public int getIdApostaSegura() {
+		return super.getIdApostaSegura();
 	}
 	
 	

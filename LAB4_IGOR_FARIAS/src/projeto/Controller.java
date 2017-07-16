@@ -260,7 +260,7 @@ public class Controller {
 			int custo) {
 		apostaExcecoes("Erro no cadastro de aposta assegurada por valor: ", apostador, valor, previsao);
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por valor: ", cenario);
-		Aposta apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro);
+		Aposta apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro, custo);
 		this.caixa += custo;
 		Cenario meuCenario = getCenario(cenario);
 		meuCenario.cadastrarAposta(apostaSeguraVal);
@@ -280,7 +280,9 @@ public class Controller {
 
 	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,
 			int custo) {
-		Aposta apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa);
+		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por taxa: ", cenario);
+		apostaExcecoes("Erro no cadastro de aposta assegurada por taxa: ", apostador, valor, previsao);
+		Aposta apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa, custo);
 		this.caixa += custo;
 		Cenario meuCenario = getCenario(cenario);
 		meuCenario.cadastrarAposta(apostaSeguraTaxa);
@@ -293,11 +295,13 @@ public class Controller {
 	 * @param apostaAssegurada é o número de identificação da aposta assegurada
 	 * @param valor é o valor do seguro
 	 */
-	public void alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
+	public int alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
 		Cenario meuCenario = getCenario(cenario);
 		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
-		((ApostaSeguraValor) aposta).setTipo("VALOR");
-		((ApostaSeguraValor) aposta).setValorSeguro(valor);
+		if (aposta instanceof ApostaSeguraTaxa) {
+			aposta = new ApostaSeguraValor(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), valor, ((ApostaSegura) aposta).getCusto());
+		}
+		return ((ApostaSegura) aposta).getIdApostaSegura();
 	}
 	
 	/**
@@ -306,11 +310,13 @@ public class Controller {
 	 * @param apostaAssegurada é a identificação da aposta assegurada
 	 * @param taxa é a taxa assegurada pela aposta segura
 	 */
-	public void alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
+	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
 		Cenario meuCenario = getCenario(cenario);
 		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
-		((ApostaSeguraTaxa) aposta).setTipo("TAXA");
-		((ApostaSeguraTaxa) aposta).setTaxaSeguro(taxa);
+		if (aposta instanceof ApostaSeguraValor) {
+			aposta = new ApostaSeguraTaxa(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), taxa, ((ApostaSegura) aposta).getCusto());
+		}
+		return ((ApostaSegura) aposta).getIdApostaSegura();
 	}
 
 	/**
