@@ -13,18 +13,6 @@ public class Aposta {
 	private String previsao;
 
 	public Aposta(String apostador, int valor, String previsao) {
-		if (apostador == null || previsao == null) {
-			throw new NullPointerException("apostador ou previsao nulos");
-		}
-		if (apostador.trim().equals("") || previsao.trim().equals("")) {
-			throw new IllegalArgumentException("apostador ou previsao vazios");
-		}
-		if (valor <= 0) {
-			throw new IllegalArgumentException("valor invalido");
-		}
-		if (! (previsao.trim().equalsIgnoreCase("vai acontecer") || previsao.trim().equalsIgnoreCase("n vai acontecer"))) {
-			throw new IllegalArgumentException("previsao invalida");
-		}
 		this.apostador = apostador;
 		this.valor = valor;
 		this.previsao = previsao;

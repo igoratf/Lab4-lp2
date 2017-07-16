@@ -19,6 +19,10 @@ public class ApostaSeguraTaxa extends ApostaSegura {
 	public double getTaxaSeguro() {
 		return taxaSeguro;
 	}
-
+	
+	public void setTaxaSeguro(double taxa) {
+		this.taxaSeguro = taxa;
+	}
+	
 	
 }

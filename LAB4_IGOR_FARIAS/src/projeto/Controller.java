@@ -240,6 +240,80 @@ public class Controller {
 	}
 
 	/**
+	 * Cadastra uma aposta assegurada pelo valor
+	 * 
+	 * @param cenario
+	 *            é o número de identificação do cenário
+	 * @param apostador
+	 *            é o nome do apostador
+	 * @param valor
+	 *            é o valor da aposta
+	 * @param previsao
+	 *            é a previsão da aposta para o possível cenário
+	 * @param valorSeguro
+	 *            é o valor do seguro da aposta
+	 * @param custo
+	 *            é o custo para o seguro da aposta
+	 * @return número de identificação da aposta assegurada
+	 */
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro,
+			int custo) {
+		apostaExcecoes("Erro no cadastro de aposta assegurada por valor: ", apostador, valor, previsao);
+		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por valor: ", cenario);
+		Aposta apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro);
+		this.caixa += custo;
+		Cenario meuCenario = getCenario(cenario);
+		meuCenario.cadastrarAposta(apostaSeguraVal);
+		return ((ApostaSegura) (apostaSeguraVal)).getIdApostaSegura();
+	}
+	
+	/**
+	 * Cadastra uma aposta assegurada por taxa
+	 * @param cenario é o número de identificação do cenário
+	 * @param apostador é o nome do apostador
+	 * @param valor é o valor da aposta
+	 * @param previsao é a previsão do possível cenário
+	 * @param taxa é a taxa de seguro da aposta
+	 * @param custo é o custo do seguro da aposta
+	 * @return número de identificação da aposta assegurada
+	 */
+
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,
+			int custo) {
+		Aposta apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa);
+		this.caixa += custo;
+		Cenario meuCenario = getCenario(cenario);
+		meuCenario.cadastrarAposta(apostaSeguraTaxa);
+		return ((ApostaSegura) apostaSeguraTaxa).getIdApostaSegura();
+	}
+	
+	/**
+	 * Altera o tipo de seguro de uma aposta assegurada para assegurada por valor
+	 * @param cenario é o número de identificação do cenário
+	 * @param apostaAssegurada é o número de identificação da aposta assegurada
+	 * @param valor é o valor do seguro
+	 */
+	public void alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
+		Cenario meuCenario = getCenario(cenario);
+		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		((ApostaSeguraValor) aposta).setTipo("VALOR");
+		((ApostaSeguraValor) aposta).setValorSeguro(valor);
+	}
+	
+	/**
+	 * Altera o tipo de seguro de uma aposta para assegurada por taxa
+	 * @param cenario é o número de identificação do cenário
+	 * @param apostaAssegurada é a identificação da aposta assegurada
+	 * @param taxa é a taxa assegurada pela aposta segura
+	 */
+	public void alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
+		Cenario meuCenario = getCenario(cenario);
+		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		((ApostaSeguraTaxa) aposta).setTipo("TAXA");
+		((ApostaSeguraTaxa) aposta).setTaxaSeguro(taxa);
+	}
+
+	/**
 	 * Verifica se um cenário ainda está aberto e lança exceção
 	 * 
 	 * @param representacao
@@ -281,32 +355,6 @@ public class Controller {
 		}
 	}
 	
-	/**
-	 * Cadastra uma aposta assegurada pelo valor
-	 * @param cenario é o número de identificação do cenário
-	 * @param apostador é o nome do apostador
-	 * @param valor é o valor da aposta
-	 * @param previsao é a previsão da aposta para o possível cenário
-	 * @param valorSeguro é o valor do seguro da aposta
-	 * @param custo é o custo para o seguro da aposta
-	 * @return número de identificação da aposta
-	 */
-	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro,
-			int custo) {
-		Aposta apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro);
-		this.caixa += custo;
-		Cenario meuCenario = getCenario(cenario);
-		meuCenario.cadastrarAposta(apostaSeguraVal);
-		return ((ApostaSegura) (apostaSeguraVal)).getIdApostaSegura();
-	}
-	
-	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa, int custo) {
-		Aposta apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa);
-		this.caixa += custo;
-		Cenario meuCenario = getCenario(cenario);
-		meuCenario.cadastrarAposta(apostaSeguraTaxa);
-		return ((ApostaSegura) apostaSeguraTaxa).getIdApostaSegura();
-	}
 
 	@Override
 	public int hashCode() {

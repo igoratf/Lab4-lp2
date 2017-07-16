@@ -73,6 +73,32 @@ public class Facade {
 			String previsao) {
 		controller.cadastrarAposta(cenario, apostador, valor, previsao);
 	}
+	
+	/**
+	 * Cadastra uma aposta assegurada por valor a partir do método cadastrarApostaSeguraValor do controlador
+	 * @param cenario é o número de identificação do cenário
+	 * @param apostador é o nome do apostador
+	 * @param valor é o valor da aposta
+	 * @param previsao é a previsão do possível cenario
+	 * @param valorSeguro é o valor do seguro da aposta
+	 * @param custo é o custo da aposta assegurada
+	 * @return número de identificação da aposta assegurada
+	 */
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro, int custo) {
+		return controller.cadastrarApostaSeguraValor(cenario, apostador, valor, previsao, valorSeguro, custo);
+	}
+	
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa, int custo) {
+		return controller.cadastrarApostaSeguraTaxa(cenario, apostador, valor, previsao, taxa, custo);
+	}
+	
+	public void alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
+		controller.alterarSeguroValor(cenario, apostaAssegurada, valor);
+	}
+	
+	public void alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
+		controller.alterarSeguroTaxa(cenario, apostaAssegurada, taxa);
+	}
 
 	/**
 	 * Chama o método valorTotalDasApostas do controlador para retornar o valor

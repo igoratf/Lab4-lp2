@@ -20,4 +20,8 @@ public class ApostaSeguraValor extends ApostaSegura {
 		return this.valorSeguro;
 	}
 	
+	public void setValorSeguro(int valorSeguro) {
+		this.valorSeguro = valorSeguro;
+	}
+	
 }
