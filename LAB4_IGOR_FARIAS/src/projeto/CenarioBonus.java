@@ -12,6 +12,7 @@ public class CenarioBonus extends Cenario {
 			throw new IllegalArgumentException("Erro no cadastro de cenario: Bonus invalido");
 		}
 		this.bonus = bonus;
+		this.caixaCenario = 0;
 	}
 	
 	@Override

@@ -20,16 +20,16 @@ public class ApostaSeguraTaxa extends ApostaSegura {
 		return taxaSeguro;
 	}
 	
-	public void setTaxaSeguro(double taxa) {
-		this.taxaSeguro = taxa;
-	}
-	
 	public int getCusto() {
 		return super.getCusto();
 	}
 	
 	public int getIdApostaSegura() {
 		return super.getIdApostaSegura();
+	}
+	
+	public int getValor() {
+		return super.getValor();
 	}
 	
 	

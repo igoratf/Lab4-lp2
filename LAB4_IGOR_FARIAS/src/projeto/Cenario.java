@@ -13,8 +13,9 @@ public class Cenario {
 	private ArrayList<Aposta> apostas = new ArrayList<>();
 	private String descricao;
 	private int estado;
-	private int caixaCenario;
+	protected int caixaCenario;
 	private int totalRateioCenario;
+	private int valorTotalSeguros;
 
 	public Cenario(String descricao) {
 		if (descricao == null) {
@@ -25,6 +26,7 @@ public class Cenario {
 		}
 		this.descricao = descricao;
 		this.estado = 0;
+		this.caixaCenario = 0;
 	}
 
 
@@ -41,10 +43,7 @@ public class Cenario {
 	 */
 	public void cadastrarAposta(Aposta aposta) {
 		this.apostas.add(aposta);
-		if (aposta instanceof ApostaSegura) {
-			((ApostaSegura) aposta).setIdApostaSegura(apostas.indexOf(aposta));
 		}
-	}
 
 	/**
 	 * Calcula o valor total das apostas do cenário
@@ -85,12 +84,12 @@ public class Cenario {
 	 * Fecha o cenário de apostas
 	 * 
 	 * @param ocorreu
-	 *            especifica se o cenário ocorrreu ou não
+	 *            especifica se o cenário ocorreu ou não
 	 * @param taxa
 	 *            é a taxa referente ao sistema
 	 */
 	public void fecharAposta(boolean ocorreu, double taxa) {
-		int valorTotalSeguros = 0;
+		this.valorTotalSeguros = 0;
 		int valorApostasPerdidas = 0;
 		if (ocorreu) {
 			this.estado = 2;
@@ -125,10 +124,26 @@ public class Cenario {
 				}
 			}
 		}
-		totalRateioCenario = valorApostasPerdidas - caixaCenario - valorTotalSeguros;
+		totalRateioCenario = valorApostasPerdidas - caixaCenario;
 
 	}
-
+	
+	/**
+	 * Cadastra no cenário uma aposta assegurada por valor
+	 * @param aposta é a aposta assegurada por valor
+	 * @return número de identificação da aposta
+	 */
+	public int cadastrarApostaSeguraValor(ApostaSeguraValor aposta) {
+		this.apostas.add(aposta);
+		aposta.setIdApostaSegura(apostas.indexOf(aposta));
+		return aposta.getIdApostaSegura();
+	}
+	
+	public int cadastrarApostaSeguraTaxa(ApostaSeguraTaxa aposta) {
+		this.apostas.add(aposta);
+		aposta.setIdApostaSegura(apostas.indexOf(aposta));
+		return aposta.getIdApostaSegura();
+	}
 	public String getDescricao() {
 		return descricao;
 	}
@@ -169,8 +184,11 @@ public class Cenario {
 		return this.totalRateioCenario;
 	}
 	
-	public Aposta getApostaSegura(int id) {
-		return apostas.get(id);
+	public ApostaSegura getApostaSegura(int id) {
+		return ((ApostaSegura) apostas.get(id));
 	}
-
+	
+	public int getValorTotalSeguros() {
+		return this.valorTotalSeguros;
+	}
 }

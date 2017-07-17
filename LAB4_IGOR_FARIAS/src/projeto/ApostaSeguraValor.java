@@ -32,5 +32,9 @@ public class ApostaSeguraValor extends ApostaSegura {
 	public int getIdApostaSegura() {
 		return super.getIdApostaSegura();
 	}
+	
+	public int getValor() {
+		return super.getValor();
+	}
 
 }

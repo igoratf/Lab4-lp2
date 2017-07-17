@@ -142,6 +142,7 @@ public class Controller {
 		Cenario meuCenario = getCenario(cenario);
 		meuCenario.fecharAposta(ocorreu, this.taxa);
 		this.caixa += meuCenario.getCaixaCenario();
+		this.caixa -= meuCenario.getValorTotalSeguros();
 	}
 
 	/**
@@ -260,11 +261,11 @@ public class Controller {
 			int custo) {
 		apostaExcecoes("Erro no cadastro de aposta assegurada por valor: ", apostador, valor, previsao);
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por valor: ", cenario);
-		Aposta apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro, custo);
-		this.caixa += custo;
 		Cenario meuCenario = getCenario(cenario);
-		meuCenario.cadastrarAposta(apostaSeguraVal);
-		return ((ApostaSegura) (apostaSeguraVal)).getIdApostaSegura();
+		ApostaSeguraValor apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro, custo);
+		meuCenario.cadastrarApostaSeguraValor(apostaSeguraVal);
+		this.caixa += custo;
+		return apostaSeguraVal.getIdApostaSegura();
 	}
 	
 	/**
@@ -282,11 +283,11 @@ public class Controller {
 			int custo) {
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por taxa: ", cenario);
 		apostaExcecoes("Erro no cadastro de aposta assegurada por taxa: ", apostador, valor, previsao);
-		Aposta apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa, custo);
-		this.caixa += custo;
+		ApostaSeguraTaxa apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa, custo);
 		Cenario meuCenario = getCenario(cenario);
-		meuCenario.cadastrarAposta(apostaSeguraTaxa);
-		return ((ApostaSegura) apostaSeguraTaxa).getIdApostaSegura();
+		this.caixa += custo;
+		meuCenario.cadastrarApostaSeguraTaxa(apostaSeguraTaxa);
+		return apostaSeguraTaxa.getIdApostaSegura();
 	}
 	
 	/**
@@ -297,11 +298,12 @@ public class Controller {
 	 */
 	public int alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
 		Cenario meuCenario = getCenario(cenario);
-		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		ApostaSegura aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		this.caixa -= aposta.getCusto();
 		if (aposta instanceof ApostaSeguraTaxa) {
-			aposta = new ApostaSeguraValor(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), valor, ((ApostaSegura) aposta).getCusto());
+			aposta = new ApostaSeguraValor(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), valor, aposta.getCusto());
 		}
-		return ((ApostaSegura) aposta).getIdApostaSegura();
+		return aposta.getIdApostaSegura();
 	}
 	
 	/**
@@ -312,11 +314,12 @@ public class Controller {
 	 */
 	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
 		Cenario meuCenario = getCenario(cenario);
-		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		ApostaSegura aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		this.caixa -= aposta.getCusto();
 		if (aposta instanceof ApostaSeguraValor) {
-			aposta = new ApostaSeguraTaxa(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), taxa, ((ApostaSegura) aposta).getCusto());
+			aposta = new ApostaSeguraTaxa(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), taxa, aposta.getCusto());
 		}
-		return ((ApostaSegura) aposta).getIdApostaSegura();
+		return aposta.getIdApostaSegura();
 	}
 
 	/**
