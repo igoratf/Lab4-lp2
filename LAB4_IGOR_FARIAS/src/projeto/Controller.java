@@ -310,10 +310,11 @@ public class Controller {
 	 */
 	public int alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
 		Cenario meuCenario = getCenario(cenario);
-		ApostaSegura aposta = meuCenario.getApostaSegura(apostaAssegurada);
-		if (aposta instanceof ApostaSeguraTaxa) {
-			aposta = new ApostaSeguraValor(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), valor,
-					aposta.getCusto());
+		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		if (aposta.getTipo().equalsIgnoreCase("TAXA")) {
+			aposta.seguro.setTipo("VALOR");
+			aposta.seguro.setValorSeguro(valor);
+			aposta.seguro.setTaxaSeguro(0);
 		}
 		return aposta.getIdApostaSegura();
 	}
@@ -330,10 +331,11 @@ public class Controller {
 	 */
 	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
 		Cenario meuCenario = getCenario(cenario);
-		ApostaSegura aposta = meuCenario.getApostaSegura(apostaAssegurada);
-		if (aposta instanceof ApostaSeguraValor) {
-			aposta = new ApostaSeguraTaxa(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), taxa,
-					aposta.getCusto());
+		Aposta aposta = meuCenario.getApostaSegura(apostaAssegurada);
+		if (aposta.getTipo().equalsIgnoreCase("VALOR")) {
+			aposta.seguro.setTipo("TAXA");
+			aposta.seguro.setValorSeguro(0);
+			aposta.seguro.setTaxaSeguro(taxa);
 		}
 		return aposta.getIdApostaSegura();
 	}

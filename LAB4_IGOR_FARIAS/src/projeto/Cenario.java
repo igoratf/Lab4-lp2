@@ -29,7 +29,6 @@ public class Cenario {
 		this.caixaCenario = 0;
 	}
 
-
 	/**
 	 * Cadastra uma aposta no cenário, se a aposta for assegurada, atribui um
 	 * número de identificação
@@ -43,7 +42,7 @@ public class Cenario {
 	 */
 	public void cadastrarAposta(Aposta aposta) {
 		this.apostas.add(aposta);
-		}
+	}
 
 	/**
 	 * Calcula o valor total das apostas do cenário
@@ -100,23 +99,24 @@ public class Cenario {
 		for (Aposta aposta : apostas) {
 			if ((this.estado == 2 && aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) || (this.estado == 1 && aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER"))) {
 				valorApostasPerdidas += aposta.getValor();
-				if (aposta instanceof ApostaSeguraValor) {
-					valorTotalSeguros += ((ApostaSeguraValor) aposta).getValorSeguro();
+				if(aposta.getValorSeguro() > 0) {
+					valorTotalSeguros += aposta.getValorSeguro();
 				}
-				else if (aposta instanceof ApostaSeguraTaxa) {
-					valorTotalSeguros += aposta.getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
+				else if (aposta.getTaxaSeguro() > 0) {
+					valorTotalSeguros += aposta.getValor() * aposta.getTaxaSeguro();
 				}
 			}
 		}
-		
 		caixaCenario = (int) (valorApostasPerdidas * taxa);
 		totalRateioCenario = valorApostasPerdidas - caixaCenario;
-
 	}
-	
+
+
 	/**
 	 * Cadastra no cenário uma aposta assegurada por valor
-	 * @param aposta é a aposta assegurada por valor
+	 * 
+	 * @param aposta
+	 *            é a aposta assegurada por valor
 	 * @return número de identificação da aposta
 	 */
 	public int cadastrarApostaSeguraValor(ApostaSeguraValor aposta) {
@@ -124,16 +124,17 @@ public class Cenario {
 		aposta.setIdApostaSegura(apostas.indexOf(aposta));
 		return aposta.getIdApostaSegura();
 	}
-	
+
 	public int cadastrarApostaSeguraTaxa(ApostaSeguraTaxa aposta) {
 		this.apostas.add(aposta);
 		aposta.setIdApostaSegura(apostas.indexOf(aposta));
 		return aposta.getIdApostaSegura();
 	}
+
 	public String getDescricao() {
 		return descricao;
 	}
-	
+
 	public String getEstado() {
 		String retorno = "";
 		switch (estado) {
@@ -151,17 +152,16 @@ public class Cenario {
 			break;
 		}
 		return retorno;
-		
+
 	}
-	
+
 	@Override
 	public String toString() {
 		String retorno = "";
 		retorno += getDescricao() + " - " + getEstado();
 		return retorno;
 	}
-	
-	
+
 	public int getCaixaCenario() {
 		return this.caixaCenario;
 	}
@@ -169,11 +169,11 @@ public class Cenario {
 	public int getTotalRateioCenario() {
 		return this.totalRateioCenario;
 	}
-	
-	public ApostaSegura getApostaSegura(int id) {
-		return ((ApostaSegura) apostas.get(id));
+
+	public Aposta getApostaSegura(int id) {
+		return apostas.get(id);
 	}
-	
+
 	public int getValorTotalSeguros() {
 		return this.valorTotalSeguros;
 	}
