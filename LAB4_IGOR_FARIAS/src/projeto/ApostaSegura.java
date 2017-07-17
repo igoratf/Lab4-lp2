@@ -1,9 +1,9 @@
 package projeto;
 
 public abstract class ApostaSegura extends Aposta {
-	private int idApostaSegura;
-	private String tipo;
-	private int custo;
+	protected int idApostaSegura;
+	protected String tipo;
+	protected int custo;
 	
 	public ApostaSegura(String apostador, int valor, String previsao, int custo) {
 		super(apostador, valor, previsao);

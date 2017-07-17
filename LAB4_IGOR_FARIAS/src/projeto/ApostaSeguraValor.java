@@ -1,7 +1,7 @@
 package projeto;
 
 public class ApostaSeguraValor extends ApostaSegura {
-	private int valorSeguro;
+	protected int valorSeguro;
 
 	public ApostaSeguraValor(String apostador, int valor, String previsao, int valorSeguro, int custo) {
 		super(apostador, valor, previsao, custo);
@@ -21,18 +21,14 @@ public class ApostaSeguraValor extends ApostaSegura {
 		return this.valorSeguro;
 	}
 
-	public void setValorSeguro(int valorSeguro) {
-		this.valorSeguro = valorSeguro;
-	}
-
 	public int getCusto() {
 		return super.getCusto();
 	}
-	
+
 	public int getIdApostaSegura() {
 		return super.getIdApostaSegura();
 	}
-	
+
 	public int getValor() {
 		return super.getValor();
 	}

@@ -267,15 +267,22 @@ public class Controller {
 		this.caixa += custo;
 		return apostaSeguraVal.getIdApostaSegura();
 	}
-	
+
 	/**
 	 * Cadastra uma aposta assegurada por taxa
-	 * @param cenario é o número de identificação do cenário
-	 * @param apostador é o nome do apostador
-	 * @param valor é o valor da aposta
-	 * @param previsao é a previsão do possível cenário
-	 * @param taxa é a taxa de seguro da aposta
-	 * @param custo é o custo do seguro da aposta
+	 * 
+	 * @param cenario
+	 *            é o número de identificação do cenário
+	 * @param apostador
+	 *            é o nome do apostador
+	 * @param valor
+	 *            é o valor da aposta
+	 * @param previsao
+	 *            é a previsão do possível cenário
+	 * @param taxa
+	 *            é a taxa de seguro da aposta
+	 * @param custo
+	 *            é o custo do seguro da aposta
 	 * @return número de identificação da aposta assegurada
 	 */
 
@@ -289,35 +296,44 @@ public class Controller {
 		meuCenario.cadastrarApostaSeguraTaxa(apostaSeguraTaxa);
 		return apostaSeguraTaxa.getIdApostaSegura();
 	}
-	
+
 	/**
-	 * Altera o tipo de seguro de uma aposta assegurada para assegurada por valor
-	 * @param cenario é o número de identificação do cenário
-	 * @param apostaAssegurada é o número de identificação da aposta assegurada
-	 * @param valor é o valor do seguro
+	 * Altera o tipo de seguro de uma aposta assegurada para assegurada por
+	 * valor
+	 * 
+	 * @param cenario
+	 *            é o número de identificação do cenário
+	 * @param apostaAssegurada
+	 *            é o número de identificação da aposta assegurada
+	 * @param valor
+	 *            é o valor do seguro
 	 */
 	public int alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
 		Cenario meuCenario = getCenario(cenario);
 		ApostaSegura aposta = meuCenario.getApostaSegura(apostaAssegurada);
-		this.caixa -= aposta.getCusto();
 		if (aposta instanceof ApostaSeguraTaxa) {
-			aposta = new ApostaSeguraValor(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), valor, aposta.getCusto());
+			aposta = new ApostaSeguraValor(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), valor,
+					aposta.getCusto());
 		}
 		return aposta.getIdApostaSegura();
 	}
-	
+
 	/**
 	 * Altera o tipo de seguro de uma aposta para assegurada por taxa
-	 * @param cenario é o número de identificação do cenário
-	 * @param apostaAssegurada é a identificação da aposta assegurada
-	 * @param taxa é a taxa assegurada pela aposta segura
+	 * 
+	 * @param cenario
+	 *            é o número de identificação do cenário
+	 * @param apostaAssegurada
+	 *            é a identificação da aposta assegurada
+	 * @param taxa
+	 *            é a taxa assegurada pela aposta segura
 	 */
 	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
 		Cenario meuCenario = getCenario(cenario);
 		ApostaSegura aposta = meuCenario.getApostaSegura(apostaAssegurada);
-		this.caixa -= aposta.getCusto();
 		if (aposta instanceof ApostaSeguraValor) {
-			aposta = new ApostaSeguraTaxa(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), taxa, aposta.getCusto());
+			aposta = new ApostaSeguraTaxa(aposta.getApostador(), aposta.getValor(), aposta.getPrevisao(), taxa,
+					aposta.getCusto());
 		}
 		return aposta.getIdApostaSegura();
 	}
@@ -363,7 +379,6 @@ public class Controller {
 			throw new IllegalArgumentException(representacao + "Previsao invalida");
 		}
 	}
-	
 
 	@Override
 	public int hashCode() {

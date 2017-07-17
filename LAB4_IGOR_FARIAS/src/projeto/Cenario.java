@@ -10,12 +10,12 @@ import java.util.ArrayList;
  *
  */
 public class Cenario {
-	private ArrayList<Aposta> apostas = new ArrayList<>();
-	private String descricao;
-	private int estado;
+	protected ArrayList<Aposta> apostas = new ArrayList<>();
+	protected String descricao;
+	protected int estado;
 	protected int caixaCenario;
-	private int totalRateioCenario;
-	private int valorTotalSeguros;
+	protected int totalRateioCenario;
+	protected int valorTotalSeguros;
 
 	public Cenario(String descricao) {
 		if (descricao == null) {

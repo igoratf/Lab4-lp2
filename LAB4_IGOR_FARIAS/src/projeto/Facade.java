@@ -1,7 +1,8 @@
 ﻿package projeto;
+
 /**
- * Classe de fachada, possui métodos de uso geral e utiliza o sistema
- * para realizar as ações.
+ * Classe de fachada, possui métodos de uso geral e utiliza o sistema para
+ * realizar as ações.
  * 
  * @author Igor Farias - igor.farias@ccc.ufcg.edu.br
  */
@@ -26,7 +27,7 @@ public class Facade {
 	 * Chama o método cadastrarCenario do controlador para cadastrar um cenário
 	 * 
 	 * @param descricao
-	 *           é a possível situação futura que o cenário descreve
+	 *            é a possível situação futura que o cenário descreve
 	 * @return retorna o número de identificação do cenário
 	 */
 	public int cadastrarCenario(String descricao) {
@@ -69,33 +70,42 @@ public class Facade {
 	 * @param previsao
 	 *            é o palpite da aposta para a situação futura
 	 */
-	public void cadastrarAposta(int cenario, String apostador, int valor,
-			String previsao) {
+	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
 		controller.cadastrarAposta(cenario, apostador, valor, previsao);
 	}
-	
+
 	/**
-	 * Cadastra uma aposta assegurada por valor a partir do método cadastrarApostaSeguraValor do controlador
-	 * @param cenario é o número de identificação do cenário
-	 * @param apostador é o nome do apostador
-	 * @param valor é o valor da aposta
-	 * @param previsao é a previsão do possível cenario
-	 * @param valorSeguro é o valor do seguro da aposta
-	 * @param custo é o custo da aposta assegurada
+	 * Cadastra uma aposta assegurada por valor a partir do método
+	 * cadastrarApostaSeguraValor do controlador
+	 * 
+	 * @param cenario
+	 *            é o número de identificação do cenário
+	 * @param apostador
+	 *            é o nome do apostador
+	 * @param valor
+	 *            é o valor da aposta
+	 * @param previsao
+	 *            é a previsão do possível cenario
+	 * @param valorSeguro
+	 *            é o valor do seguro da aposta
+	 * @param custo
+	 *            é o custo da aposta assegurada
 	 * @return número de identificação da aposta assegurada
 	 */
-	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro, int custo) {
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro,
+			int custo) {
 		return controller.cadastrarApostaSeguraValor(cenario, apostador, valor, previsao, valorSeguro, custo);
 	}
-	
-	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa, int custo) {
+
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,
+			int custo) {
 		return controller.cadastrarApostaSeguraTaxa(cenario, apostador, valor, previsao, taxa, custo);
 	}
-	
+
 	public void alterarSeguroValor(int cenario, int apostaAssegurada, int valor) {
 		controller.alterarSeguroValor(cenario, apostaAssegurada, valor);
 	}
-	
+
 	public void alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa) {
 		controller.alterarSeguroTaxa(cenario, apostaAssegurada, taxa);
 	}
@@ -120,10 +130,11 @@ public class Facade {
 	 *            é o número de identificação do cenário
 	 * @return representação textual das apostas do cenário
 	 */
-	
+
 	public int totalDeApostas(int cenario) {
 		return controller.totalDeApostas(cenario);
 	}
+
 	public String exibeApostas(int cenario) {
 		return controller.exibeApostas(cenario);
 	}
@@ -139,7 +150,7 @@ public class Facade {
 	public void fecharAposta(int cenario, boolean ocorreu) {
 		controller.fecharAposta(cenario, ocorreu);
 	}
-	
+
 	public int cadastrarCenario(String descricao, int bonus) {
 		return controller.cadastrarCenario(descricao, bonus);
 	}
