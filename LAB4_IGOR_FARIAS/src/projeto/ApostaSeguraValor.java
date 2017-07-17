@@ -5,7 +5,7 @@ public class ApostaSeguraValor extends ApostaSegura {
 
 	public ApostaSeguraValor(String apostador, int valor, String previsao, int valorSeguro, int custo) {
 		super(apostador, valor, previsao, custo);
-		this.setTipo("VALOR");
+		this.tipo = "VALOR";
 		this.valorSeguro = valorSeguro;
 	}
 

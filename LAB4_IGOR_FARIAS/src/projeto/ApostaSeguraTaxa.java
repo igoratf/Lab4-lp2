@@ -5,7 +5,7 @@ public class ApostaSeguraTaxa extends ApostaSegura {
 
 	public ApostaSeguraTaxa(String apostador, int valor, String previsao, double taxa, int custo) {
 		super(apostador, valor, previsao, custo);
-		this.setTipo("TAXA");
+		this.tipo = "TAXA";
 		this.taxaSeguro = taxa;
 	}
 

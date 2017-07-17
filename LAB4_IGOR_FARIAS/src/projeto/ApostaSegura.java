@@ -22,11 +22,6 @@ public abstract class ApostaSegura extends Aposta {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-
 	public int getCusto() {
 		return custo;
 	}
