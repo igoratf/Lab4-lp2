@@ -98,32 +98,18 @@ public class Cenario {
 		}
 
 		for (Aposta aposta : apostas) {
-			if (this.estado == 2) {
-				if (aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) {
-					valorApostasPerdidas += aposta.getValor();
-					caixaCenario += aposta.getValor() * taxa;
-					if (aposta instanceof ApostaSeguraValor) {
-						valorTotalSeguros += ((ApostaSeguraValor) aposta).getValorSeguro();
-					}
-					else if (aposta instanceof ApostaSeguraTaxa) {
-						valorTotalSeguros += aposta.getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
-					}
+			if ((this.estado == 2 && aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) || (this.estado == 1 && aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER"))) {
+				valorApostasPerdidas += aposta.getValor();
+				if (aposta instanceof ApostaSeguraValor) {
+					valorTotalSeguros += ((ApostaSeguraValor) aposta).getValorSeguro();
 				}
-			}
-
-			else if (this.estado == 1) {
-				if (aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER")) {
-					valorApostasPerdidas += aposta.getValor();
-					caixaCenario += aposta.getValor() * taxa;
-					if (aposta instanceof ApostaSeguraValor) {
-						valorTotalSeguros += ((ApostaSeguraValor) aposta).getValorSeguro();
-					}
-					else if (aposta instanceof ApostaSeguraTaxa) {
-						valorTotalSeguros += ((ApostaSeguraTaxa) aposta).getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
-					}
+				else if (aposta instanceof ApostaSeguraTaxa) {
+					valorTotalSeguros += aposta.getValor() * ((ApostaSeguraTaxa) aposta).getTaxaSeguro();
 				}
 			}
 		}
+		
+		caixaCenario = (int) (valorApostasPerdidas * taxa);
 		totalRateioCenario = valorApostasPerdidas - caixaCenario;
 
 	}
