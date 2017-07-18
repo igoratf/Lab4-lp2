@@ -10,19 +10,21 @@ import java.util.ArrayList;
  *
  */
 public class Cenario {
-	protected ArrayList<Aposta> apostas = new ArrayList<>();
-	protected String descricao;
-	protected int estado;
-	protected int caixaCenario;
-	protected int totalRateioCenario;
-	protected int valorTotalSeguros;
+	private ArrayList<Aposta> apostas = new ArrayList<>();
+	private String descricao;
+	private int estado;
+	private int caixaCenario;
+	private int totalRateioCenario;
+	private int valorTotalSeguros;
 
 	public Cenario(String descricao) {
 		if (descricao == null) {
-			throw new NullPointerException("Erro no cadastro de cenario: Descricao nao pode ser nula");
+			throw new NullPointerException(
+					"Erro no cadastro de cenario: Descricao nao pode ser nula");
 		}
 		if (descricao.trim().equals("")) {
-			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
+			throw new IllegalArgumentException(
+					"Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		}
 		this.descricao = descricao;
 		this.estado = 0;
@@ -97,20 +99,30 @@ public class Cenario {
 		}
 
 		for (Aposta aposta : apostas) {
-			if ((this.estado == 2 && aposta.getPrevisao().equalsIgnoreCase("N VAI ACONTECER")) || (this.estado == 1 && aposta.getPrevisao().equalsIgnoreCase("VAI ACONTECER"))) {
+			if ((this.estado == 2 && aposta.getPrevisao().equalsIgnoreCase(
+					"N VAI ACONTECER"))
+					|| (this.estado == 1 && aposta.getPrevisao()
+							.equalsIgnoreCase("VAI ACONTECER"))) {
 				valorApostasPerdidas += aposta.getValor();
-				if(aposta.getValorSeguro() > 0) {
+				if (aposta.getValorSeguro() > 0) {
 					valorTotalSeguros += aposta.getValorSeguro();
-				}
-				else if (aposta.getTaxaSeguro() > 0) {
-					valorTotalSeguros += aposta.getValor() * aposta.getTaxaSeguro();
+				} else if (aposta.getTaxaSeguro() > 0) {
+					valorTotalSeguros += aposta.getValor()
+							* aposta.getTaxaSeguro();
 				}
 			}
 		}
+		/*
+		 * Calcula o valor destinado ao caixa de cenário a partir da taxa
+		 * recebida do sistema e do valor das apostas perdidas
+		 */
 		caixaCenario = (int) (valorApostasPerdidas * taxa);
+		/*
+		 * Calcula o valor destinado ao rateio entre os vencedores a partir do
+		 * valor das apostas perdidas e do valor destinado ao caixa
+		 */
 		totalRateioCenario = valorApostasPerdidas - caixaCenario;
 	}
-
 
 	/**
 	 * Cadastra no cenário uma aposta assegurada por valor
@@ -121,14 +133,19 @@ public class Cenario {
 	 */
 	public int cadastrarApostaSeguraValor(ApostaSeguraValor aposta) {
 		this.apostas.add(aposta);
-		aposta.setIdApostaSegura(apostas.indexOf(aposta));
-		return aposta.getIdApostaSegura();
+		return this.apostas.size();
 	}
 
+	/**
+	 * Cadastra no cenário uma aposta assegurada por taxa
+	 * 
+	 * @param aposta
+	 *            é a aposta assegurada por taxa
+	 * @return número de identificação da aposta
+	 */
 	public int cadastrarApostaSeguraTaxa(ApostaSeguraTaxa aposta) {
 		this.apostas.add(aposta);
-		aposta.setIdApostaSegura(apostas.indexOf(aposta));
-		return aposta.getIdApostaSegura();
+		return this.apostas.size();
 	}
 
 	public String getDescricao() {
@@ -171,10 +188,12 @@ public class Cenario {
 	}
 
 	public Aposta getApostaSegura(int id) {
-		return apostas.get(id);
+		return apostas.get(id-1);
 	}
 
 	public int getValorTotalSeguros() {
 		return this.valorTotalSeguros;
 	}
+	
+	
 }

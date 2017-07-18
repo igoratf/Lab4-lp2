@@ -78,7 +78,7 @@ public class FacadeTest {
 		 * Verifica se um cenário válido está sendo cadastrado corretamente
 		 */
 		assertEquals(1, facade.cadastrarCenario("Todo mundo vai pagar calculo 2"));
-		assertEquals("Todo mundo vai pagar calculo 2", facade.controller.getCenario(1).getDescricao());
+		assertEquals(2, facade.cadastrarCenario("Todo mundo paga P2"));
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class FacadeTest {
 		facade.cadastrarCenario("Conseguir uma bolsa");
 		facade.cadastrarCenario("Pagar tudo com 10");
 		String actual = facade.exibirCenarios();
-		String expected = facade.controller.exibirCenario(1) + Utilidades.LN + facade.controller.exibirCenario(2) + Utilidades.LN;
+		String expected = facade.exibirCenario(1) + Utilidades.LN + facade.exibirCenario(2) + Utilidades.LN;
 		assertEquals(expected, actual);
 	}
 
@@ -120,7 +120,9 @@ public class FacadeTest {
 		 */
 		facade.cadastrarCenario("Pagar P2");
 		facade.cadastrarAposta(1, "Ash Ketchun", 1000, "VAI ACONTECER");
-		assertEquals(1, facade.controller.getCenario(1).totalDeApostas());
+		assertEquals(1, facade.totalDeApostas(1));
+		facade.cadastrarAposta(1, "Equipe Rocket", 2000, "N VAI ACONTECER");
+		assertEquals(2, facade.totalDeApostas(1));
 		/*
 		 * Verifica se a tentativa de cadastrar uma aposta em um ceá�rio
 		 * inválido está retornando exceção
@@ -227,15 +229,17 @@ public class FacadeTest {
 		 * sendo modificado corretamente
 		 */
 		facade.cadastrarCenario("Será que agora vai?");
+		facade.cadastrarAposta(1, "Eu", 2000, "VAI ACONTECER");
 		facade.fecharAposta(1, false);
-		assertEquals("Finalizado (n ocorreu)", facade.controller.getCenario(1).getEstado());
+		assertEquals(20, facade.getCaixaCenario(1));
 		/*
-		 * Verifica se o estado de um cen�rio de apostas que ocorreu est� sendo
+		 * Verifica se o estado de um cenário de apostas que ocorreu está sendo
 		 * modificado corretamente
 		 */
 		facade.cadastrarCenario("Bilionário antes dos 30");
+		facade.cadastrarAposta(2, "Caio Sanches", 20000, "N VAI ACONTECER");
 		facade.fecharAposta(2, true);
-		assertEquals("Finalizado (ocorreu)", facade.controller.getCenario(2).getEstado());
+		assertEquals(200, facade.getCaixaCenario(2));
 	}
 
 	@Test
@@ -275,6 +279,6 @@ public class FacadeTest {
 	/*
 	 * Verifica se o cadastro de um cenário bônus válido está ocorrendo corretamente
 	 */
-		assertEquals("Cassino Royale", facade.controller.getCenario(2).getDescricao());
+		assertEquals(1, facade.cadastrarCenario("Quem quer dinheiro", 9000));
 	}
 }

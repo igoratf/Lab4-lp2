@@ -11,8 +11,14 @@ public class Aposta {
 	private String apostador;
 	private int valor;
 	private String previsao;
-	protected Seguro seguro = new Seguro(null, 0);
+	private Seguro seguro = new Seguro(null, 0);
 	
+	/**
+	 * 
+	 * @param apostador
+	 * @param valor
+	 * @param previsao
+	 */
 	public Aposta(String apostador, int valor, String previsao) {
 		this.apostador = apostador;
 		this.valor = valor;
@@ -31,28 +37,18 @@ public class Aposta {
 		return previsao;
 	}
 	
-	@Override
-	public String toString() {
-		String retorno = this.getApostador() + " - " + "R$" + String.format("%.2f", this.getValor()/100.0) + " - " + this.getPrevisao()
-		+ Utilidades.LN;
-		return retorno;
-	}
-	
-	public void setTipo(String tipo) {
+	protected void setTipo(String tipo) {
 		seguro.setTipo(tipo);
 	}
 	
-	public void setCusto(int custo) {
+	protected void setCusto(int custo) {
 		seguro.setCusto(custo);
 	}
 	
-	public void setValorSeguro(int valor) {
+	protected void setValorSeguro(int valor) {
 		seguro.setValorSeguro(valor);
 	}
 	
-	public void setIdApostaSegura(int id) {
-		seguro.setIdApostaSegura(id);
-	}
 	
 	public String getTipo() {
 		return seguro.getTipo();
@@ -66,11 +62,8 @@ public class Aposta {
 		return seguro.getValorSeguro();
 	}
 	
-	public int getIdApostaSegura() {
-		return seguro.getIdApostaSegura();
-	}
 	
-	public void setTaxaSeguro(double taxa) {
+	protected void setTaxaSeguro(double taxa) {
 		seguro.setTaxaSeguro(taxa);
 	}
 	
@@ -78,4 +71,10 @@ public class Aposta {
 		return seguro.getTaxaSeguro();
 	}
 
+	@Override
+	public String toString() {
+		String retorno = this.getApostador() + " - " + "R$" + String.format("%.2f", this.getValor()/100.0) + " - " + this.getPrevisao()
+				+ Utilidades.LN;
+		return retorno;
+	}
 }

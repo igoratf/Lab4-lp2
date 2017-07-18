@@ -8,7 +8,7 @@
  */
 public class Facade {
 
-	protected Controller controller;
+	private Controller controller;
 
 	/**
 	 * Inicializa o sistema, instanciando o controlador
