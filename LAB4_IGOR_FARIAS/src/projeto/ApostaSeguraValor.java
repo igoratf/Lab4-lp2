@@ -3,6 +3,10 @@ package projeto;
 public class ApostaSeguraValor extends Aposta {
 	public ApostaSeguraValor(String apostador, int valor, String previsao, int valorSeguro, int custo) {
 		super(apostador, valor, previsao);
+		if (valorSeguro <= 0) {
+			throw new IllegalArgumentException("Erro ao cadastrar aposta assegurada: valor do seguro invalido");
+		}
+		
 		this.setTipo("VALOR");
 		this.setCusto(custo);
 		this.setValorSeguro(valorSeguro);

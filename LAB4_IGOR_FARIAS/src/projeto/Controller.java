@@ -406,6 +406,11 @@ public class Controller {
 	public int getNumCenario(Cenario cenario) {
 		return listaCenarios.indexOf(cenario) + 1;
 	}
+	
+	public Aposta getAposta(int cenario, int aposta) {
+		Cenario meuCenario = getCenario(cenario);
+		return meuCenario.getApostaSegura(aposta);
+	}
 
 
 }

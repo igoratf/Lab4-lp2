@@ -268,17 +268,122 @@ public class FacadeTest {
 		assertEquals(1980, facade.getTotalRateioCenario(1));
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	/*
-	 * Verifica se o cadastro de um cenário bônus com bônus inválido retorna exceção
-	 */
+	@Test
 	public void cadastraCenarioBonusTest() {
-		facade.cadastrarCenario("Cadastrando cenário bônus", -2200);
-	
-		facade.cadastrarCenario("Cassino Royale", 30000);
-	/*
-	 * Verifica se o cadastro de um cenário bônus válido está ocorrendo corretamente
-	 */
+		/*
+		 * Verifica se o cadastro de um cenário bônus com bônus inválido retorna
+		 * exceção
+		 */
+		try {
+			facade.cadastrarCenario("Cadastrando cenário bônus", -2200);
+		} catch (Exception e) {
+			assertEquals("Erro no cadastro de cenario: Bonus invalido", e.getMessage());
+		}
+
+		/*
+		 * Verifica se o cadastro de um cenário bônus válido está ocorrendo
+		 * corretamente
+		 */
 		assertEquals(1, facade.cadastrarCenario("Quem quer dinheiro", 9000));
+		assertEquals(2, facade.cadastrarCenario("Casino Royale", 300000));
 	}
+
+	@Test
+
+	public void cadastrarApostaSeguraValorTest() {
+		/*
+		 * Verifica se o cadastro de uma aposta assegurada por valor, inválida,
+		 * está retornando exceção
+		 */
+		try {
+			facade.cadastrarCenario("Shao Khan dies", 2000);
+			facade.cadastrarApostaSeguraValor(1, "Shang Tsung", 333, "N VAI ACONTECER", 300, 200);
+		} catch (Exception e) {
+			assertEquals("Erro ao cadastrar aposta assegurada: valor do seguro invalido", e.getMessage());
+		}
+		/*
+		 * Verifica se o cadastro de uma aposta assegurada por valor válida está
+		 * ocorrendo corretamente
+		 */
+		assertEquals(2, facade.cadastrarApostaSeguraValor(1, "Liu Kang", 900, "VAI ACONTECER", 40000, 2000));
+	}
+
+	public void cadastrarApostaSeguraTaxaTest() {
+		/*
+		 * Verifica se o cadastro de uma aposta assegurada por taxa, invalida,
+		 * está retornando exceção
+		 */
+		try {
+			facade.cadastrarCenario("Shao Khan dies", 20000);
+			facade.cadastrarApostaSeguraTaxa(1, "Raiden", 20000, "VAI ACONTECER", -20, 200);
+		} catch (Exception e) {
+			assertEquals("Erro ao cadastrar aposta assegurada: taxa de seguro nao pode ser menor ou igual a zero",
+					e.getMessage());
+		}
+		/*
+		 * Verifica se o cadastro de uma aposta assegurada por taxa válida está
+		 * ocorrendo corretamente
+		 * 
+		 */
+		assertEquals(2, facade.cadastrarApostaSeguraTaxa(1, "Sonya Blade", 20000, "VAI ACONTECER", 0.25, 200));
+	}
+	
+	@Test
+	public void alterarSeguroValorTest() {
+		/*
+		 * Verifica se a alteração de seguro de uma aposta para assegurada por valor está ocorrendo corretamente
+		 */
+		facade.cadastrarCenario("It ends");
+		facade.cadastrarApostaSeguraTaxa(1, "Eu", 2000, "VAI ACONTECER", 0.10, 200);
+		facade.alterarSeguroValor(1, 1, 300);
+		assertEquals(300, facade.getAposta(1, 1).getValorSeguro());
+	}
+	
+	@Test
+	public void alterarSeguroTaxaTest() {
+		/*
+		 * Verifica se a alteração de seguro de uma aposta para assegurada por taxa está ocorrendo corretamente
+		 * 
+		 */
+		facade.cadastrarCenario("Zerar GTA V");
+		facade.cadastrarApostaSeguraValor(1, "Eu", 2000, "VAI ACONTECER", 3000, 200);
+		facade.alterarSeguroTaxa(1, 1, 0.20);
+		assertEquals(0.20, facade.getAposta(1, 1).getTaxaSeguro(), 0.1);
+	}
+	
+	@Test
+	public void getCaixaCenarioBonusTest() {
+		/*
+		 * Verifica se o cenário bônus está retornando o valor correto para o caixa
+		 */
+		facade.cadastrarCenario("Fim do lab", 30000);
+		facade.cadastrarAposta(1, "Qualquer um", 9000, "N VAI ACONTECER");
+		facade.fecharAposta(1, true);
+		assertEquals(90, facade.getCaixaCenario(1));
+	}
+	
+	@Test
+	public void getTotalRateioCenarioBonusTest() {
+		/*
+		 * Verifica se o cenário bônus está retornando o valor correto para rateio
+		 */
+		facade.cadastrarCenario("Fim do lab", 30000);
+		facade.cadastrarAposta(1, "Jeremias", 20000, "N VAI ACONTECER");
+		facade.fecharAposta(1, true);
+		assertEquals(49800, facade.getTotalRateioCenario(1));
+	}
+	
+	@Test
+	public void getCaixaTest2() {
+		/*
+		 * Verifica se o caixa do sistema está retornando o valor correto ao possuir cenário bônus e apostas asseguradas
+		 */
+		facade.cadastrarCenario("Fim do lab", 50);
+		facade.cadastrarAposta(1, "Mario", 200, "VAI ACONTECER");
+		facade.cadastrarApostaSeguraValor(1, "MG", 200, "VAI ACONTECER", 200, 200);
+		facade.cadastrarApostaSeguraTaxa(1, "Anyone", 200, "N VAI ACONTECER", 0.50, 200);
+		facade.fecharAposta(1, true);
+		assertEquals(1252, facade.getCaixa());
+	}
+
 }

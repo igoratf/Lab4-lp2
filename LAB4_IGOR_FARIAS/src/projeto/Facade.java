@@ -170,5 +170,9 @@ public class Facade {
 	public double getTaxa() {
 		return controller.getTaxa();
 	}
+	
+	public Aposta getAposta(int cenario, int aposta) {
+		return controller.getAposta(cenario, aposta);
+	}
 
 }
