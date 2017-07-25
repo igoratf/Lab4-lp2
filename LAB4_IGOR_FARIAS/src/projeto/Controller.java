@@ -1,6 +1,10 @@
 ﻿package projeto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Classe controladora que representa o sistema que irá administrar o
@@ -11,19 +15,17 @@ import java.util.ArrayList;
  */
 
 public class Controller {
-	private int indexCenarios = 0;
 	private ArrayList<Cenario> listaCenarios = new ArrayList<Cenario>();
+	private ArrayList<Cenario> cenariosOrdenados = new ArrayList<Cenario>();
 	private int caixa;
 	private double taxa;
 
 	public Controller(int caixa, double taxa) {
 		if (caixa < 0) {
-			throw new IllegalArgumentException(
-					"Erro na inicializacao: Caixa nao pode ser inferior a 0");
+			throw new IllegalArgumentException("Erro na inicializacao: Caixa nao pode ser inferior a 0");
 		}
 		if (taxa < 0) {
-			throw new IllegalArgumentException(
-					"Erro na inicializacao: Taxa nao pode ser inferior a 0");
+			throw new IllegalArgumentException("Erro na inicializacao: Taxa nao pode ser inferior a 0");
 		}
 		this.caixa = caixa;
 		this.taxa = taxa;
@@ -52,8 +54,7 @@ public class Controller {
 	public String exibirCenario(int cenario) {
 		cenarioInvalidosExcecoes("Erro na consulta de cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		return Integer.toString(getNumCenario(meuCenario)) + " - "
-				+ meuCenario.toString();
+		return Integer.toString(getNumCenario(meuCenario)) + " - " + meuCenario.toString();
 	}
 
 	/**
@@ -64,8 +65,7 @@ public class Controller {
 	public String exibirCenarios() {
 		String retorno = "";
 		for (Cenario cenario : listaCenarios) {
-			retorno += Integer.toString(getNumCenario(cenario)) + " - "
-					+ cenario.toString() + Utilidades.LN;
+			retorno += Integer.toString(getNumCenario(cenario)) + " - " + cenario.toString() + Utilidades.LN;
 		}
 		return retorno;
 	}
@@ -82,11 +82,9 @@ public class Controller {
 	 * @param previsao
 	 *            é a previsão da aposta sobre o cenário
 	 */
-	public void cadastrarAposta(int cenario, String apostador, int valor,
-			String previsao) {
+	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
 		cenarioInvalidosExcecoes("Erro no cadastro de aposta: ", cenario);
-		apostaExcecoes("Erro no cadastro de aposta: ", apostador, valor,
-				previsao);
+		apostaExcecoes("Erro no cadastro de aposta: ", apostador, valor, previsao);
 		Aposta aposta = new Aposta(apostador, valor, previsao);
 		Cenario meuCenario = getCenario(cenario);
 		meuCenario.cadastrarAposta(aposta);
@@ -101,8 +99,7 @@ public class Controller {
 	 * @return é o valor total das apostas do cenário em centavos
 	 */
 	public int valorTotalDeApostas(int cenario) {
-		cenarioInvalidosExcecoes(
-				"Erro na consulta do valor total de apostas: ", cenario);
+		cenarioInvalidosExcecoes("Erro na consulta do valor total de apostas: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.valorTotalDeApostas();
 	}
@@ -116,8 +113,7 @@ public class Controller {
 	 * @return quantidade de apostas do cenário em inteiro
 	 */
 	public int totalDeApostas(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta do total de apostas: ",
-				cenario);
+		cenarioInvalidosExcecoes("Erro na consulta do total de apostas: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.totalDeApostas();
 	}
@@ -162,8 +158,7 @@ public class Controller {
 	 * @return retorna o valor que será destinado ao caixa em centavos
 	 */
 	public int getCaixaCenario(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta do caixa do cenario: ",
-				cenario);
+		cenarioInvalidosExcecoes("Erro na consulta do caixa do cenario: ", cenario);
 		cenarioAbertoExcecao("Erro na consulta do caixa do cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getCaixaCenario();
@@ -178,10 +173,8 @@ public class Controller {
 	 * @return valor total a ser rateado entre os vencedores, em centavos
 	 */
 	public int getTotalRateioCenario(int cenario) {
-		cenarioInvalidosExcecoes(
-				"Erro na consulta do total de rateio do cenario: ", cenario);
-		cenarioAbertoExcecao(
-				"Erro na consulta do total de rateio do cenario: ", cenario);
+		cenarioInvalidosExcecoes("Erro na consulta do total de rateio do cenario: ", cenario);
+		cenarioAbertoExcecao("Erro na consulta do total de rateio do cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getTotalRateioCenario();
 	}
@@ -219,15 +212,12 @@ public class Controller {
 	 *            é o custo para o seguro da aposta
 	 * @return número de identificação da aposta assegurada
 	 */
-	public int cadastrarApostaSeguraValor(int cenario, String apostador,
-			int valor, String previsao, int valorSeguro, int custo) {
-		apostaExcecoes("Erro no cadastro de aposta assegurada por valor: ",
-				apostador, valor, previsao);
-		cenarioInvalidosExcecoes(
-				"Erro no cadastro de aposta assegurada por valor: ", cenario);
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro,
+			int custo) {
+		apostaExcecoes("Erro no cadastro de aposta assegurada por valor: ", apostador, valor, previsao);
+		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por valor: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		ApostaSeguraValor apostaSeguraVal = new ApostaSeguraValor(apostador,
-				valor, previsao, valorSeguro, custo);
+		ApostaSeguraValor apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro, custo);
 		this.caixa += custo;
 		return meuCenario.cadastrarApostaSeguraValor(apostaSeguraVal);
 	}
@@ -250,14 +240,11 @@ public class Controller {
 	 * @return número de identificação da aposta assegurada
 	 */
 
-	public int cadastrarApostaSeguraTaxa(int cenario, String apostador,
-			int valor, String previsao, double taxa, int custo) {
-		cenarioInvalidosExcecoes(
-				"Erro no cadastro de aposta assegurada por taxa: ", cenario);
-		apostaExcecoes("Erro no cadastro de aposta assegurada por taxa: ",
-				apostador, valor, previsao);
-		ApostaSeguraTaxa apostaSeguraTaxa = new ApostaSeguraTaxa(apostador,
-				valor, previsao, taxa, custo);
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,
+			int custo) {
+		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por taxa: ", cenario);
+		apostaExcecoes("Erro no cadastro de aposta assegurada por taxa: ", apostador, valor, previsao);
+		ApostaSeguraTaxa apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa, custo);
 		Cenario meuCenario = getCenario(cenario);
 		this.caixa += custo;
 		return meuCenario.cadastrarApostaSeguraTaxa(apostaSeguraTaxa);
@@ -306,6 +293,30 @@ public class Controller {
 		return apostaAssegurada;
 	}
 
+	public void alterarOrdem(String ordem) {
+		for (Cenario cenario : listaCenarios) {
+			cenariosOrdenados.add(cenario);
+		}
+		if (ordem.equals("Cadastro")) {
+			for (Cenario cenario : listaCenarios) {
+				cenariosOrdenados.add(cenario);
+			}
+		} else if (ordem.equals("Nome")) {
+			ordenaCenariosNome(cenariosOrdenados);
+		}
+
+	}
+	
+	public void ordenaCenariosNome(ArrayList<Cenario> lista) {
+		Comparator<Cenario> ordenaCenarioNome = new OrdenaCenarioNome();
+		lista.sort(ordenaCenarioNome);
+	}
+	
+	public void ordenaCenariosApostas(ArrayList<Cenario> lista) {
+		Comparator<Cenario> ordenaCenarioApostas = new OrdenaCenarioApostas();
+		lista.sort(ordenaCenarioApostas);
+	}
+
 	/**
 	 * Verifica se o cenário é válido a partir de seu número
 	 * 
@@ -316,12 +327,10 @@ public class Controller {
 	 */
 	public void cenarioInvalidosExcecoes(String representacao, int cenario) {
 		if (cenario <= 0) {
-			throw new IllegalArgumentException(representacao
-					+ "Cenario invalido");
+			throw new IllegalArgumentException(representacao + "Cenario invalido");
 		}
 		if (cenario > listaCenarios.size() || listaCenarios.size() == 0) {
-			throw new IllegalArgumentException(representacao
-					+ "Cenario nao cadastrado");
+			throw new IllegalArgumentException(representacao + "Cenario nao cadastrado");
 		}
 	}
 
@@ -336,8 +345,7 @@ public class Controller {
 	public void cenarioFechadoExcecao(String representacao, int cenario) {
 		Cenario meuCenario = getCenario(cenario);
 		if (!meuCenario.getEstado().equals("Nao finalizado")) {
-			throw new RuntimeException(representacao
-					+ "Cenario ja esta fechado");
+			throw new RuntimeException(representacao + "Cenario ja esta fechado");
 		}
 	}
 
@@ -352,8 +360,7 @@ public class Controller {
 	public void cenarioAbertoExcecao(String representacao, int cenario) {
 		Cenario meuCenario = getCenario(cenario);
 		if (meuCenario.getEstado().equals("Nao finalizado")) {
-			throw new RuntimeException(representacao
-					+ "Cenario ainda esta aberto");
+			throw new RuntimeException(representacao + "Cenario ainda esta aberto");
 		}
 	}
 
@@ -369,24 +376,18 @@ public class Controller {
 	 * @param previsao
 	 *            é a previsão da aposta
 	 */
-	public void apostaExcecoes(String representacao, String apostador,
-			int valor, String previsao) {
+	public void apostaExcecoes(String representacao, String apostador, int valor, String previsao) {
 		if (apostador == null || apostador.trim().equals("")) {
-			throw new NullPointerException(representacao
-					+ "Apostador nao pode ser vazio ou nulo");
+			throw new NullPointerException(representacao + "Apostador nao pode ser vazio ou nulo");
 		}
 		if (valor <= 0) {
-			throw new IllegalArgumentException(representacao
-					+ "Valor nao pode ser menor ou igual a zero");
+			throw new IllegalArgumentException(representacao + "Valor nao pode ser menor ou igual a zero");
 		}
 		if (previsao == null || previsao.trim().equals("")) {
-			throw new IllegalArgumentException(representacao
-					+ "Previsao nao pode ser vazia ou nula");
+			throw new IllegalArgumentException(representacao + "Previsao nao pode ser vazia ou nula");
 		}
-		if (!(previsao.equalsIgnoreCase("VAI ACONTECER") || previsao
-				.equalsIgnoreCase("N VAI ACONTECER"))) {
-			throw new IllegalArgumentException(representacao
-					+ "Previsao invalida");
+		if (!(previsao.equalsIgnoreCase("VAI ACONTECER") || previsao.equalsIgnoreCase("N VAI ACONTECER"))) {
+			throw new IllegalArgumentException(representacao + "Previsao invalida");
 		}
 	}
 
@@ -406,11 +407,10 @@ public class Controller {
 	public int getNumCenario(Cenario cenario) {
 		return listaCenarios.indexOf(cenario) + 1;
 	}
-	
+
 	public Aposta getAposta(int cenario, int aposta) {
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getApostaSegura(aposta);
 	}
-
 
 }

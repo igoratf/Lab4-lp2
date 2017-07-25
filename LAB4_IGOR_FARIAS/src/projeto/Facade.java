@@ -154,6 +154,10 @@ public class Facade {
 	public int cadastrarCenario(String descricao, int bonus) {
 		return controller.cadastrarCenario(descricao, bonus);
 	}
+	
+	public void alterarOrdem(String ordem) {
+		controller.alterarOrdem(ordem);
+	}
 
 	public int getCaixaCenario(int cenario) {
 		return controller.getCaixaCenario(cenario);
