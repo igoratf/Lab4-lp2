@@ -385,5 +385,15 @@ public class FacadeTest {
 		facade.fecharAposta(1, true);
 		assertEquals(1252, facade.getCaixa());
 	}
+	
+	@Test
+	public void exibirCenarioOrdenadoTest() {
+		/*
+		 * Verifica se a exibição dos cenários ordenados está ocorrendo corretamente
+		 */
+		
+		facade.cadastrarCenario("Oi");
+		facade.exibirCenarioOrdenado(1);
+	}
 
 }

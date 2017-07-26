@@ -38,6 +38,7 @@ public class Controller {
 	public int cadastrarCenario(String descricao) {
 		Cenario cenario = new Cenario(descricao);
 		listaCenarios.add(cenario);
+		cenariosOrdenados.add(cenario);
 		cenario.setIdCenario(listaCenarios.size());
 		return listaCenarios.size();
 	}
