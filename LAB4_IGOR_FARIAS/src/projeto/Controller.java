@@ -1,10 +1,7 @@
 ﻿package projeto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Classe controladora que representa o sistema que irá administrar o
@@ -41,7 +38,8 @@ public class Controller {
 	public int cadastrarCenario(String descricao) {
 		Cenario cenario = new Cenario(descricao);
 		listaCenarios.add(cenario);
-		return getNumCenario(cenario);
+		cenario.setIdCenario(listaCenarios.size());
+		return listaCenarios.size();
 	}
 
 	/**
@@ -52,7 +50,7 @@ public class Controller {
 	 * @return representação textual do cenário
 	 */
 	public String exibirCenario(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta de cenario: ", cenario);
+		cenarioInvalidoExcecoes("Erro na consulta de cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return Integer.toString(getNumCenario(meuCenario)) + " - " + meuCenario.toString();
 	}
@@ -83,7 +81,7 @@ public class Controller {
 	 *            é a previsão da aposta sobre o cenário
 	 */
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
-		cenarioInvalidosExcecoes("Erro no cadastro de aposta: ", cenario);
+		cenarioInvalidoExcecoes("Erro no cadastro de aposta: ", cenario);
 		apostaExcecoes("Erro no cadastro de aposta: ", apostador, valor, previsao);
 		Aposta aposta = new Aposta(apostador, valor, previsao);
 		Cenario meuCenario = getCenario(cenario);
@@ -99,7 +97,7 @@ public class Controller {
 	 * @return é o valor total das apostas do cenário em centavos
 	 */
 	public int valorTotalDeApostas(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta do valor total de apostas: ", cenario);
+		cenarioInvalidoExcecoes("Erro na consulta do valor total de apostas: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.valorTotalDeApostas();
 	}
@@ -113,7 +111,7 @@ public class Controller {
 	 * @return quantidade de apostas do cenário em inteiro
 	 */
 	public int totalDeApostas(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta do total de apostas: ", cenario);
+		cenarioInvalidoExcecoes("Erro na consulta do total de apostas: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.totalDeApostas();
 	}
@@ -141,10 +139,10 @@ public class Controller {
 	 *            especifica se o cenário ocorreu ou não
 	 */
 	public void fecharAposta(int cenario, boolean ocorreu) {
-		cenarioInvalidosExcecoes("Erro ao fechar aposta: ", cenario);
+		cenarioInvalidoExcecoes("Erro ao fechar aposta: ", cenario);
 		cenarioFechadoExcecao("Erro ao fechar aposta: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		meuCenario.fecharAposta(ocorreu, this.taxa);
+		meuCenario.fecharAposta(ocorreu, this.taxa);	
 		this.caixa += meuCenario.getCaixaCenario();
 		this.caixa -= meuCenario.getValorTotalSeguros();
 	}
@@ -158,7 +156,7 @@ public class Controller {
 	 * @return retorna o valor que será destinado ao caixa em centavos
 	 */
 	public int getCaixaCenario(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta do caixa do cenario: ", cenario);
+		cenarioInvalidoExcecoes("Erro na consulta do caixa do cenario: ", cenario);
 		cenarioAbertoExcecao("Erro na consulta do caixa do cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getCaixaCenario();
@@ -173,7 +171,7 @@ public class Controller {
 	 * @return valor total a ser rateado entre os vencedores, em centavos
 	 */
 	public int getTotalRateioCenario(int cenario) {
-		cenarioInvalidosExcecoes("Erro na consulta do total de rateio do cenario: ", cenario);
+		cenarioInvalidoExcecoes("Erro na consulta do total de rateio do cenario: ", cenario);
 		cenarioAbertoExcecao("Erro na consulta do total de rateio do cenario: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		return meuCenario.getTotalRateioCenario();
@@ -191,6 +189,7 @@ public class Controller {
 	public int cadastrarCenario(String descricao, int bonus) {
 		Cenario cenario = new CenarioBonus(descricao, bonus);
 		listaCenarios.add(cenario);
+		cenariosOrdenados.add(cenario);
 		this.caixa -= bonus;
 		return getNumCenario(cenario);
 	}
@@ -215,7 +214,7 @@ public class Controller {
 	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int valorSeguro,
 			int custo) {
 		apostaExcecoes("Erro no cadastro de aposta assegurada por valor: ", apostador, valor, previsao);
-		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por valor: ", cenario);
+		cenarioInvalidoExcecoes("Erro no cadastro de aposta assegurada por valor: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
 		ApostaSeguraValor apostaSeguraVal = new ApostaSeguraValor(apostador, valor, previsao, valorSeguro, custo);
 		this.caixa += custo;
@@ -242,7 +241,7 @@ public class Controller {
 
 	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,
 			int custo) {
-		cenarioInvalidosExcecoes("Erro no cadastro de aposta assegurada por taxa: ", cenario);
+		cenarioInvalidoExcecoes("Erro no cadastro de aposta assegurada por taxa: ", cenario);
 		apostaExcecoes("Erro no cadastro de aposta assegurada por taxa: ", apostador, valor, previsao);
 		ApostaSeguraTaxa apostaSeguraTaxa = new ApostaSeguraTaxa(apostador, valor, previsao, taxa, custo);
 		Cenario meuCenario = getCenario(cenario);
@@ -293,28 +292,43 @@ public class Controller {
 		return apostaAssegurada;
 	}
 
+	/**
+	 * Altera a ordenação dos cenários
+	 * 
+	 * @param ordem
+	 *            é a parâmetro de ordenação
+	 */
 	public void alterarOrdem(String ordem) {
-		for (Cenario cenario : listaCenarios) {
-			cenariosOrdenados.add(cenario);
-		}
-		if (ordem.equals("Cadastro")) {
-			for (Cenario cenario : listaCenarios) {
-				cenariosOrdenados.add(cenario);
-			}
-		} else if (ordem.equals("Nome")) {
+		ordemExcecoes("Erro ao alterar ordem: ", ordem);
+		if (ordem.equalsIgnoreCase("Apostas")) {
+			ordenaCenariosApostas(cenariosOrdenados);
+		} else if (ordem.equalsIgnoreCase("Nome")) {
 			ordenaCenariosNome(cenariosOrdenados);
+		} else if (ordem.equalsIgnoreCase("Cadastro")) {
+			ordenaCenariosCadastro(cenariosOrdenados);
 		}
 
 	}
-	
+
+	public String exibirCenarioOrdenado(int numCenario) {
+		cenarioInvalidoExcecoes("Erro na consulta de cenario ordenado: ", numCenario);
+		Cenario meuCenario = getCenarioOrdenado(numCenario);
+		return Integer.toString(meuCenario.getIdCenario()) + " - " + meuCenario.toString();
+	}
+
 	public void ordenaCenariosNome(ArrayList<Cenario> lista) {
 		Comparator<Cenario> ordenaCenarioNome = new OrdenaCenarioNome();
 		lista.sort(ordenaCenarioNome);
 	}
-	
+
 	public void ordenaCenariosApostas(ArrayList<Cenario> lista) {
 		Comparator<Cenario> ordenaCenarioApostas = new OrdenaCenarioApostas();
 		lista.sort(ordenaCenarioApostas);
+	}
+	
+	public void ordenaCenariosCadastro(ArrayList<Cenario> lista) {
+		Comparator<Cenario> ordenaCenarioCadastro = new OrdenaCenarioCadastro();
+		lista.sort(ordenaCenarioCadastro);
 	}
 
 	/**
@@ -325,7 +339,7 @@ public class Controller {
 	 * @param cenario
 	 *            é o número de identificação do cenário
 	 */
-	public void cenarioInvalidosExcecoes(String representacao, int cenario) {
+	public void cenarioInvalidoExcecoes(String representacao, int cenario) {
 		if (cenario <= 0) {
 			throw new IllegalArgumentException(representacao + "Cenario invalido");
 		}
@@ -391,6 +405,15 @@ public class Controller {
 		}
 	}
 
+	public void ordemExcecoes(String representacao, String ordem) {
+		if (ordem == null || ordem.trim().equals("")) {
+			throw new NullPointerException(representacao + "Ordem nao pode ser vazia ou nula");
+		}
+		if (!(ordem.equalsIgnoreCase("Cadastro") || ordem.equalsIgnoreCase("Nome") || ordem.equalsIgnoreCase("Apostas"))) {
+			throw new IllegalArgumentException(representacao + "Ordem invalida");
+		}
+	}
+
 	public int getCaixa() {
 		return caixa;
 	}
@@ -404,8 +427,17 @@ public class Controller {
 		return cenario;
 	}
 
+	public Cenario getCenarioOrdenado(int numCenario) {
+		Cenario cenario = cenariosOrdenados.get(numCenario - 1);
+		return cenario;
+	}
+
 	public int getNumCenario(Cenario cenario) {
 		return listaCenarios.indexOf(cenario) + 1;
+	}
+
+	public int getNumCenarioOrdenado(Cenario cenario) {
+		return cenariosOrdenados.indexOf(cenario) + 1;
 	}
 
 	public Aposta getAposta(int cenario, int aposta) {

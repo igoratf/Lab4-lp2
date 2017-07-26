@@ -10,6 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Cenario {
+	private int idCenario;
 	private ArrayList<Aposta> apostas = new ArrayList<>();
 	private String descricao;
 	private int estado;
@@ -194,6 +195,16 @@ public class Cenario {
 	public int getValorTotalSeguros() {
 		return this.valorTotalSeguros;
 	}
+
+	public int getIdCenario() {
+		return idCenario;
+	}
+
+	public void setIdCenario(int idCenario) {
+		this.idCenario = idCenario;
+	}
+	
+	
 	
 	
 }
