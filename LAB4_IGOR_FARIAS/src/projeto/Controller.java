@@ -143,7 +143,7 @@ public class Controller {
 		cenarioInvalidoExcecoes("Erro ao fechar aposta: ", cenario);
 		cenarioFechadoExcecao("Erro ao fechar aposta: ", cenario);
 		Cenario meuCenario = getCenario(cenario);
-		meuCenario.fecharAposta(ocorreu, this.taxa);	
+		meuCenario.fecharAposta(ocorreu, this.taxa);
 		this.caixa += meuCenario.getCaixaCenario();
 		this.caixa -= meuCenario.getValorTotalSeguros();
 	}
@@ -192,7 +192,8 @@ public class Controller {
 		listaCenarios.add(cenario);
 		cenariosOrdenados.add(cenario);
 		this.caixa -= bonus;
-		return getNumCenario(cenario);
+		cenario.setIdCenario(listaCenarios.size());
+		return listaCenarios.size();
 	}
 
 	/**
@@ -311,22 +312,38 @@ public class Controller {
 
 	}
 
+	/**
+	 * Exibe informações de um cenário ordenado
+	 * 
+	 * @param numCenario
+	 *            é o número de identificação do cenário
+	 * @return representação textual do cenário
+	 */
 	public String exibirCenarioOrdenado(int numCenario) {
 		cenarioInvalidoExcecoes("Erro na consulta de cenario ordenado: ", numCenario);
 		Cenario meuCenario = getCenarioOrdenado(numCenario);
 		return Integer.toString(getNumCenario(meuCenario)) + " - " + meuCenario.toString();
 	}
 
+	/**
+	 * Ordena os cenários pela ordem alfabética
+	 */
 	public void ordenaCenariosNome() {
 		Comparator<Cenario> ordenaCenarioNome = new OrdenaCenarioNome();
 		cenariosOrdenados.sort(ordenaCenarioNome);
 	}
 
+	/**
+	 * Ordena os cenários pela quantidade de apostas
+	 */
 	public void ordenaCenariosApostas() {
 		Comparator<Cenario> ordenaCenarioApostas = new OrdenaCenarioApostas();
 		cenariosOrdenados.sort(ordenaCenarioApostas);
 	}
-	
+
+	/**
+	 * Ordena os cenários pela ordem de cadastro
+	 */
 	public void ordenaCenariosCadastro() {
 		cenariosOrdenados.clear();
 		for (Cenario cenario : listaCenarios) {
@@ -408,11 +425,20 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Verifica se a ordem de alteração é válida
+	 * 
+	 * @param representacao
+	 *            é o texto que referencia o método que lança a exceção
+	 * @param ordem
+	 *            é o parâmetro utilizado para a ordenação
+	 */
 	public void ordemExcecoes(String representacao, String ordem) {
 		if (ordem == null || ordem.trim().equals("")) {
 			throw new NullPointerException(representacao + "Ordem nao pode ser vazia ou nula");
 		}
-		if (!(ordem.equalsIgnoreCase("Cadastro") || ordem.equalsIgnoreCase("Nome") || ordem.equalsIgnoreCase("Apostas"))) {
+		if (!(ordem.equalsIgnoreCase("Cadastro") || ordem.equalsIgnoreCase("Nome")
+				|| ordem.equalsIgnoreCase("Apostas"))) {
 			throw new IllegalArgumentException(representacao + "Ordem invalida");
 		}
 	}

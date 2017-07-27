@@ -327,22 +327,24 @@ public class FacadeTest {
 		 */
 		assertEquals(2, facade.cadastrarApostaSeguraTaxa(1, "Sonya Blade", 20000, "VAI ACONTECER", 0.25, 200));
 	}
-	
+
 	@Test
 	public void alterarSeguroValorTest() {
 		/*
-		 * Verifica se a alteração de seguro de uma aposta para assegurada por valor está ocorrendo corretamente
+		 * Verifica se a alteração de seguro de uma aposta para assegurada por
+		 * valor está ocorrendo corretamente
 		 */
 		facade.cadastrarCenario("It ends");
 		facade.cadastrarApostaSeguraTaxa(1, "Eu", 2000, "VAI ACONTECER", 0.10, 200);
 		facade.alterarSeguroValor(1, 1, 300);
 		assertEquals(300, facade.getAposta(1, 1).getValorSeguro());
 	}
-	
+
 	@Test
 	public void alterarSeguroTaxaTest() {
 		/*
-		 * Verifica se a alteração de seguro de uma aposta para assegurada por taxa está ocorrendo corretamente
+		 * Verifica se a alteração de seguro de uma aposta para assegurada por
+		 * taxa está ocorrendo corretamente
 		 * 
 		 */
 		facade.cadastrarCenario("Zerar GTA V");
@@ -350,33 +352,36 @@ public class FacadeTest {
 		facade.alterarSeguroTaxa(1, 1, 0.20);
 		assertEquals(0.20, facade.getAposta(1, 1).getTaxaSeguro(), 0.1);
 	}
-	
+
 	@Test
 	public void getCaixaCenarioBonusTest() {
 		/*
-		 * Verifica se o cenário bônus está retornando o valor correto para o caixa
+		 * Verifica se o cenário bônus está retornando o valor correto para o
+		 * caixa
 		 */
 		facade.cadastrarCenario("Fim do lab", 30000);
 		facade.cadastrarAposta(1, "Qualquer um", 9000, "N VAI ACONTECER");
 		facade.fecharAposta(1, true);
 		assertEquals(90, facade.getCaixaCenario(1));
 	}
-	
+
 	@Test
 	public void getTotalRateioCenarioBonusTest() {
 		/*
-		 * Verifica se o cenário bônus está retornando o valor correto para rateio
+		 * Verifica se o cenário bônus está retornando o valor correto para
+		 * rateio
 		 */
 		facade.cadastrarCenario("Fim do lab", 30000);
 		facade.cadastrarAposta(1, "Jeremias", 20000, "N VAI ACONTECER");
 		facade.fecharAposta(1, true);
 		assertEquals(49800, facade.getTotalRateioCenario(1));
 	}
-	
+
 	@Test
 	public void getCaixaTest2() {
 		/*
-		 * Verifica se o caixa do sistema está retornando o valor correto ao possuir cenário bônus e apostas asseguradas
+		 * Verifica se o caixa do sistema está retornando o valor correto ao
+		 * possuir cenário bônus e apostas asseguradas
 		 */
 		facade.cadastrarCenario("Fim do lab", 50);
 		facade.cadastrarAposta(1, "Mario", 200, "VAI ACONTECER");
@@ -385,15 +390,86 @@ public class FacadeTest {
 		facade.fecharAposta(1, true);
 		assertEquals(1252, facade.getCaixa());
 	}
-	
+
 	@Test
 	public void exibirCenarioOrdenadoTest() {
 		/*
-		 * Verifica se a exibição dos cenários ordenados está ocorrendo corretamente
+		 * Aqui o método alterarOrdem também será testado
 		 */
 		
-		facade.cadastrarCenario("Oi");
-		assertEquals("1 - Oi - Nao finalizado", facade.exibirCenarioOrdenado(1));
+		
+		/*
+		 * Verifica se a exibição dos cenários sem alteração de ordem está
+		 * ocorrendo corretamente
+		 */
+
+		facade.cadastrarCenario("Um dia acaba o lab");
+		assertEquals("1 - Um dia acaba o lab - Nao finalizado", facade.exibirCenarioOrdenado(1));
+		facade.fecharAposta(1, true);
+		assertEquals("1 - Um dia acaba o lab - Finalizado (ocorreu)", facade.exibirCenarioOrdenado(1));
+
+		/*
+		 * Verifica se a exibição dos cenários com alteração de ordem por nome
+		 * está ocorrendo corretamente
+		 * 
+		 */
+
+		facade.cadastrarCenario("Ainda há tempo de pagar cálculo", 1000);
+		facade.cadastrarCenario("Será que me formarei?");
+		facade.alterarOrdem("nome");
+		assertEquals("2 - Ainda há tempo de pagar cálculo - Nao finalizado - R$ 10,00",
+				facade.exibirCenarioOrdenado(1));
+		assertEquals("1 - Um dia acaba o lab - Finalizado (ocorreu)", facade.exibirCenarioOrdenado(3));
+
+		/*
+		 * Verifica se a exibição dos cenários com alteração de ordem por
+		 * cadastro está ocorrendo corretamente
+		 * 
+		 */
+
+		facade.alterarOrdem("cadastro");
+		assertEquals("1 - Um dia acaba o lab - Finalizado (ocorreu)", facade.exibirCenarioOrdenado(1));
+		assertEquals("3 - Será que me formarei? - Nao finalizado", facade.exibirCenarioOrdenado(3));
+
+		/*
+		 * Verifica se a exibição dos cenários com alteração de ordem por número
+		 * de apostas está ocorrendo corretamente
+		 * 
+		 */
+
+		facade.cadastrarAposta(1, "Eu", 200, "VAI ACONTECER");
+		facade.cadastrarAposta(1, "Você", 2000, "VAI ACONTECER");
+		facade.cadastrarAposta(3, "Eu", 2000, "VAI ACONTECER");
+		facade.alterarOrdem("apostas");
+		assertEquals("1 - Um dia acaba o lab - Finalizado (ocorreu)", facade.exibirCenarioOrdenado(1));
+		assertEquals("3 - Será que me formarei? - Nao finalizado", facade.exibirCenarioOrdenado(2));
+		facade.cadastrarAposta(2, "Você", 2000, "N VAI ACONTECER");
+		facade.cadastrarAposta(2, "Silvio Santos", 999999, "VAI ACONTECER");
+		facade.alterarOrdem("apostas");
+		assertEquals("1 - Um dia acaba o lab - Finalizado (ocorreu)", facade.exibirCenarioOrdenado(1));
+
+		/*
+		 * Verifica se tentativas de alteração de ordem dos cenários com ordens
+		 * inválidas estão retornando exceção
+		 */
+
+		try {
+			facade.alterarOrdem(null);
+		} catch (Exception e) {
+			assertEquals("Erro ao alterar ordem: Ordem nao pode ser vazia ou nula", e.getMessage());
+		}
+
+		try {
+			facade.alterarOrdem("");
+		} catch (Exception e) {
+			assertEquals("Erro ao alterar ordem: Ordem nao pode ser vazia ou nula", e.getMessage());
+		}
+
+		try {
+			facade.alterarOrdem("qualquer coisa");
+		} catch (Exception e) {
+			assertEquals("Erro ao alterar ordem: Ordem invalida", e.getMessage());
+		}
 	}
 
 }
