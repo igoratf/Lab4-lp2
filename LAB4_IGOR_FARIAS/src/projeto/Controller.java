@@ -302,11 +302,11 @@ public class Controller {
 	public void alterarOrdem(String ordem) {
 		ordemExcecoes("Erro ao alterar ordem: ", ordem);
 		if (ordem.equalsIgnoreCase("Apostas")) {
-			ordenaCenariosApostas(cenariosOrdenados);
+			ordenaCenariosApostas();
 		} else if (ordem.equalsIgnoreCase("Nome")) {
-			ordenaCenariosNome(cenariosOrdenados);
+			ordenaCenariosNome();
 		} else if (ordem.equalsIgnoreCase("Cadastro")) {
-			ordenaCenariosCadastro(cenariosOrdenados);
+			ordenaCenariosCadastro();
 		}
 
 	}
@@ -314,22 +314,24 @@ public class Controller {
 	public String exibirCenarioOrdenado(int numCenario) {
 		cenarioInvalidoExcecoes("Erro na consulta de cenario ordenado: ", numCenario);
 		Cenario meuCenario = getCenarioOrdenado(numCenario);
-		return Integer.toString(meuCenario.getIdCenario()) + " - " + meuCenario.toString();
+		return Integer.toString(getNumCenario(meuCenario)) + " - " + meuCenario.toString();
 	}
 
-	public void ordenaCenariosNome(ArrayList<Cenario> lista) {
+	public void ordenaCenariosNome() {
 		Comparator<Cenario> ordenaCenarioNome = new OrdenaCenarioNome();
-		lista.sort(ordenaCenarioNome);
+		cenariosOrdenados.sort(ordenaCenarioNome);
 	}
 
-	public void ordenaCenariosApostas(ArrayList<Cenario> lista) {
+	public void ordenaCenariosApostas() {
 		Comparator<Cenario> ordenaCenarioApostas = new OrdenaCenarioApostas();
-		lista.sort(ordenaCenarioApostas);
+		cenariosOrdenados.sort(ordenaCenarioApostas);
 	}
 	
-	public void ordenaCenariosCadastro(ArrayList<Cenario> lista) {
-		Comparator<Cenario> ordenaCenarioCadastro = new OrdenaCenarioCadastro();
-		lista.sort(ordenaCenarioCadastro);
+	public void ordenaCenariosCadastro() {
+		cenariosOrdenados.clear();
+		for (Cenario cenario : listaCenarios) {
+			cenariosOrdenados.add(cenario);
+		}
 	}
 
 	/**

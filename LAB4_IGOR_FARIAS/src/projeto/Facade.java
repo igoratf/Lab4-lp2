@@ -159,8 +159,8 @@ public class Facade {
 		controller.alterarOrdem(ordem);
 	}
 	
-	public void exibirCenarioOrdenado(int cenario) {
-		controller.exibirCenarioOrdenado(cenario);
+	public String exibirCenarioOrdenado(int cenario) {
+		return controller.exibirCenarioOrdenado(cenario);
 	}
 
 	public int getCaixaCenario(int cenario) {

@@ -393,7 +393,7 @@ public class FacadeTest {
 		 */
 		
 		facade.cadastrarCenario("Oi");
-		facade.exibirCenarioOrdenado(1);
+		assertEquals("1 - Oi - Nao finalizado", facade.exibirCenarioOrdenado(1));
 	}
 
 }
